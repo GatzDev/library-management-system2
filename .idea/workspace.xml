@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My first commit">
+      <changelist_data name="Gatz" email="" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library management system.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/CreateTableDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controller/AuthorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controller/TransactionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controllerImpl/AuthorControllerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controllerImpl/BookControllerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controllerImpl/TransactionControllerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/controllerImpl/UserControllerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/model/Author.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/model/Book.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/model/Transaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/util/DatabaseConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/util/FileHandler.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Gatz" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Q8lMib6u3M8MBDhGaZiihUP7mS" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-j-8.0.32.jar",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "vcs.Git"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.library_management.Main">
+    <configuration name="library_management.CreateTableInDataBase" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="library_management.CreateTableInDataBase" />
+      <module name="library management system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="library_management.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="library_management.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="library_management.Main" />
+      <module name="library management system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="library_management.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.library_management.Main" />
+        <item itemvalue="Application.library_management.CreateTableInDataBase" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="" />
+      <created>1684743058372</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1684743058372</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="My first commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="My first commit" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
