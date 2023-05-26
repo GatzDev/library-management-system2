@@ -1,24 +1,28 @@
-package library_management.model;
+package library_management.entity;
 
 import java.time.LocalDate;
 
 public class Transaction {
-    private int transactionId;
+    private int id;
     private User user;
     private Book book;
     private LocalDate borrowingDate;
     private LocalDate returnDate;
 
-    public Transaction(int transactionId, User user, Book book, LocalDate borrowingDate, LocalDate returnDate) {
-        this.transactionId = transactionId;
+    public Transaction(int id, User user, Book book, LocalDate borrowingDate, LocalDate returnDate) {
+        this.id = id;
         this.user = user;
         this.book = book;
         this.borrowingDate = borrowingDate;
         this.returnDate = returnDate;
     }
 
-    public int getTransactionId() {
-        return transactionId;
+    public Transaction(int id, int userId, int bookId, LocalDate borrowingDate, LocalDate returnDate) {
+
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public User getUser() {

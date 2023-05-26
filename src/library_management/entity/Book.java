@@ -1,42 +1,43 @@
-package library_management.model;
+package library_management.entity;
 
 
 public class Book {
 
     public static final String validateISBN = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$";
 
-    private int bookId ;
+    private int id ;
     private String title;
     private String author;
+    private int author_id;
     private int publicationYear;
     private String ISBN;
-    private boolean availability;
+    private boolean stock;
 
 
-
-    public Book(int bookId, String title, String author, int publicationYear, String ISBN, boolean availability) {
-            this.bookId = bookId;
+    public Book(int id, String title, int author_id, int publicationYear, String ISBN, boolean stock) {
+            this.id = id;
             this.title = title;
-            this.author = author;
+            this.author_id = author_id;
             this.publicationYear = publicationYear;
             this.ISBN = ISBN;
-            this.availability = true;
-        }
+            this.stock = true;
+    }
 
-    public Book(String title, String author, int publicationYear, String isbn) {
+    public Book(String title, int author_id, int publicationYear, String ISBN) {
         this.title = title;
-        this.author = author;
+        this.author_id = author_id;
         this.publicationYear = publicationYear;
         this.ISBN = ISBN;
     }
 
+
     // Getters and Setters
-        public int getBookId() {
-            return this.bookId;
+        public int getId() {
+            return this.id;
         }
 
-        public void setBookId(int bookId) {
-        this.bookId = bookId;
+        public void setId(int id) {
+        this.id = id;
         }
 
         public String getTitle() {
@@ -51,8 +52,8 @@ public class Book {
             return author;
         }
 
-        public void setAuthor(String author) {
-            this.author = author;
+        public void setAuthorId(int author) {
+            this.author_id = author_id;
         }
 
         public int getPublicationYear() {
@@ -72,14 +73,22 @@ public class Book {
         }
 
         public boolean isAvailable() {
-            return availability;
+            return stock;
         }
 
-        public void setAvailability(boolean availability) {
-            this.availability = availability;
+        public void setAvailability(boolean stock) {
+            this.stock = stock;
         }
 
-    
-    
+
+    public int getAuthorId() {
+        return author_id;
     }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
+}
 

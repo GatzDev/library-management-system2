@@ -1,26 +1,27 @@
-package library_management.controllerImpl;
+package library_management.impl;
 
-import library_management.model.Book;
-import library_management.controller.BookController;
+import library_management.entity.Book;
+import library_management.Dao.BookDao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookControllerImpl implements BookController {
+public class BookDaoImpl implements BookDao {
     private Connection connection;
 
-    public BookControllerImpl(Connection connection) {
+    public BookDaoImpl(Connection connection) {
         this.connection = connection;
     }
+
     @Override
-    public void addBook(Book book) {
+    public boolean addBook(Book book) {
         try {
-            String query = "INSERT INTO books (title, author, publication_year, isbn, availability) " +
+            String query = "INSERT INTO books (title, author_id, publication_year, isbn, stock) " +
                     "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, book.getTitle());
-            statement.setString(2, book.getAuthor());
+            statement.setInt(2, book.getAuthorId());
             statement.setInt(3, book.getPublicationYear());
             statement.setString(4, book.getISBN());
             statement.setBoolean(5, book.isAvailable());
@@ -31,20 +32,21 @@ public class BookControllerImpl implements BookController {
             e.printStackTrace();
 
         }
+        return false;
     }
 
     @Override
-    public void updateBook(Book book) {
+    public boolean updateBook(Book book) {
         try {
-            String query = "UPDATE books SET title = ?, author = ?, publication_year = ?, " +
-                    "isbn = ?, availability = ? WHERE id = ?";
+            String query = "UPDATE books SET title = ?, author_id = ?, publication_year = ?, " +
+                    "isbn = ?, stock = ? WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthor());
             statement.setInt(3, book.getPublicationYear());
             statement.setString(4, book.getISBN());
             statement.setBoolean(5, book.isAvailable());
-            statement.setInt(6, book.getBookId());
+            statement.setInt(6, book.getId());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Book updated successfully.");
@@ -55,11 +57,12 @@ public class BookControllerImpl implements BookController {
             System.out.println("Failed to update book.");
             e.printStackTrace();
         }
+        return false;
     }
 
 
     @Override
-    public void removeBook(int bookId) {
+    public boolean removeBook(int bookId) {
         try {
             String query = "DELETE FROM books WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -74,6 +77,7 @@ public class BookControllerImpl implements BookController {
             System.out.println("Failed to remove book.");
             e.printStackTrace();
         }
+        return false;
     }
 
 
@@ -91,10 +95,10 @@ public class BookControllerImpl implements BookController {
                 Book book = new Book(
                         resultSet.getInt("id"),
                         resultSet.getString("title"),
-                        resultSet.getString("author"),
+                        resultSet.getInt("author_id"),
                         resultSet.getInt("publication_year"),
                         resultSet.getString("isbn"),
-                        resultSet.getBoolean("availability")
+                        resultSet.getBoolean("stock")
                 );
                 books.add(book);
             }
@@ -117,10 +121,10 @@ public class BookControllerImpl implements BookController {
                 Book book = new Book(
                         resultSet.getInt("id"),
                         resultSet.getString("title"),
-                        resultSet.getString("author"),
+                        resultSet.getInt("author_id"),
                         resultSet.getInt("publication_year"),
                         resultSet.getString("isbn"),
-                        resultSet.getBoolean("availability")
+                        resultSet.getBoolean("stock")
                 );
                 books.add(book);
             }
@@ -131,32 +135,32 @@ public class BookControllerImpl implements BookController {
         return books;
     }
 
-
     @Override
     public Book getBookById(int bookId) {
-        try {
-            String query = "SELECT * FROM books WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+        String query = "SELECT * FROM books WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, bookId);
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                String author = resultSet.getString("author");
-                int publicationYear = resultSet.getInt("publication_year");
-                String isbn = resultSet.getString("isbn");
-                boolean availability = resultSet.getBoolean("availability");
-
-                return new Book(id, title, author, publicationYear, isbn, availability);
+                return extractBookFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            System.out.println("Failed to fetch book by ID: " + bookId);
+            System.out.println("Failed to retrieve the book by ID.");
             e.printStackTrace();
         }
-
         return null;
     }
+
+    private Book extractBookFromResultSet(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String title = resultSet.getString("title");
+        int authorId = resultSet.getInt("author_id");
+        int publicationYear = resultSet.getInt("publication_year");
+        String isbn = resultSet.getString("isbn");
+        boolean stock = resultSet.getBoolean("stock");
+        return new Book(id, title, authorId, publicationYear, isbn, stock);
+    }
+
 
 }
 

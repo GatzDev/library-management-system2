@@ -1,11 +1,11 @@
-package library_management.controller;
+package library_management.Dao;
 
-import library_management.model.Transaction;
+import library_management.entity.Transaction;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface TransactionController {
+public interface TransactionDao {
     void addTransaction(Transaction transaction);
     void updateTransaction(Transaction transaction);
     void removeTransaction(int transactionId);

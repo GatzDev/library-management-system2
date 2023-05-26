@@ -1,11 +1,15 @@
 package library_management;
 
-import library_management.controller.AuthorController;
-import library_management.controller.TransactionController;
-import library_management.controller.UserController;
+import library_management.Dao.AuthorDao;
+import library_management.Dao.TransactionDao;
+import library_management.Dao.UserDao;
 //import library_management.impl.AuthorDaoImpl;
-import library_management.model.Book;
-import library_management.controllerImpl.BookControllerImpl;
+import library_management.entity.Author;
+import library_management.entity.Book;
+import library_management.impl.AuthorDaoImpl;
+import library_management.impl.BookDaoImpl;
+import library_management.impl.TransactionDaoImpl;
+import library_management.impl.UserDaoImpl;
 //import library_management.impl.TransactionDaoImpl;
 //import library_management.impl.UserDaoImpl;
 
@@ -23,10 +27,10 @@ public class TerminalInterface {
     private static final String PASSWORD ="L31mz40123!";
     private static final String ISBN_REGEX = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$";
     private static final Pattern ISBN_PATTERN = Pattern.compile(ISBN_REGEX);
-    private BookControllerImpl bookDao;
-    private AuthorController authorDao;
-    private UserController userDao;
-    private TransactionController transactionDao;
+    private BookDaoImpl bookDao;
+    private AuthorDao authorDao;
+    private UserDao userDao;
+    private TransactionDao transactionDao;
     private Scanner scanner;
 
     public TerminalInterface() {
@@ -37,12 +41,10 @@ public class TerminalInterface {
 
             Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
 
-            bookDao = new BookControllerImpl(connection);
-
-
-          //  authorDao = new AuthorDaoImpl(connection);
-           // userDao = new UserDaoImpl(connection);
-           // transactionDao = new TransactionDaoImpl(connection);
+            bookDao = new BookDaoImpl(connection);
+            authorDao = new AuthorDaoImpl(connection);
+            userDao = new UserDaoImpl(connection);
+            transactionDao = new TransactionDaoImpl(connection);
 
         } catch (SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
@@ -145,13 +147,12 @@ public class TerminalInterface {
     }
 
 
-
     private void addBook() {
         System.out.println("Enter the title of the book:");
         String title = readStringInput();
 
-        System.out.println("Enter the author of the book:");
-        String author = readStringInput();
+        System.out.println("Enter the author_id of the book:");
+        int author_id = readIntInput();
 
         System.out.println("Enter the publication year of the book:");
         int publicationYear = readIntInput();
@@ -159,39 +160,143 @@ public class TerminalInterface {
         System.out.println("Enter the ISBN of the book:");
         String isbn = readStringInput();
 
-        // Validate the ISBN using regular expression
-        while (!validateISBN(isbn)) {
-            System.out.println("Invalid ISBN. Please enter a valid ISBN:");
-            isbn = readStringInput();
+        // Validate the ISBN using regex
+        if (!isbn.matches(ISBN_REGEX)) {
+            System.out.println("Invalid ISBN format. Please enter a valid ISBN.");
+            return;
         }
 
         // Create a new Book object with the user-provided details
-        Book book = new Book( title, author, publicationYear, isbn);
+        Book book = new Book(title, author_id, publicationYear, isbn);
 
-        // Call the addBook method of the BookDao instance
-        bookDao.addBook(book);
+        // Call the addBook method of the BookDao instance to add the book to the database
+        if (bookDao.addBook(book)) {
+            System.out.println("Book added successfully.");
+        } else {
+            System.out.println("Failed to add the book.");
+        }
     }
 
 
     private void updateBook() {
-        // Implementation for updating a book
+        System.out.println("Enter the ID of the book to update:");
+        int bookId = readIntInput();
+
+        // Retrieve the book from the database using the bookId
+          Book bookToUpdate = bookDao.getBookById(bookId);
+           if (bookToUpdate == null) {
+           System.out.println("Book not found.");
+           return;
+        }
+
+        System.out.println("Enter the new title of the book (or leave blank to keep the existing title):");
+        String newTitle = readStringInput();
+        if (!newTitle.isEmpty()) {
+            bookToUpdate.setTitle(newTitle);
+        }
+
+        System.out.println("Enter the new author_id of the book (or leave blank to keep the existing author):");
+        String newAuthor = readStringInput();
+        if (!newAuthor.isEmpty()) {
+            bookToUpdate.setAuthor(newAuthor);
+        }
+
+        System.out.println("Enter the new publication year of the book (or enter 0 to keep the existing year):");
+        int newPublicationYear = readIntInput();
+        if (newPublicationYear != 0) {
+            bookToUpdate.setPublicationYear(newPublicationYear);
+        }
+
+        System.out.println("Enter the new ISBN of the book (or leave blank to keep the existing ISBN):");
+        String newISBN = readStringInput();
+        if (!newISBN.isEmpty()) {
+            // Validate the new ISBN using regex
+            if (!newISBN.matches(ISBN_REGEX)) {
+                System.out.println("Invalid ISBN format. The book will not be updated.");
+                return;
+            }
+            bookToUpdate.setISBN(newISBN);
+        }
+
+        // Call the updateBook method of the BookDao instance to update the book in the database
+        if (bookDao.updateBook(bookToUpdate)) {
+            System.out.println("Book updated successfully.");
+        } else {
+            System.out.println("Failed to update the book.");
+        }
     }
+
+
+
 
     private void removeBook() {
-        // Implementation for removing a book
+        System.out.println("Enter the ID of the book to remove:");
+        int bookId = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+
+        // Remove the book
+        boolean removed = bookDao.removeBook(bookId);
+        if (removed) {
+            System.out.println("Book removed successfully.");
+        } else {
+            System.out.println("Failed to remove the book.");
+        }
     }
 
+
     private void addAuthor() {
-        // Implementation for adding an author
+        System.out.println("Enter the name of the author:");
+        String name = readStringInput();
+
+        System.out.println("Enter the birth year of the author:");
+        int birthYear = readIntInput();
+
+        // Create a new Author object with the user-provided details
+        Author author = new Author(name, birthYear);
+
+        // Call the addAuthor method of the AuthorDao instance to add the author to the database
+        authorDao.addAuthor(author);
+
     }
 
     private void updateAuthor() {
-        // Implementation for updating an author
+        System.out.println("Enter the ID of the author to update:");
+        int authorId = readIntInput();
+
+        // Check if the author exists
+        Author existingAuthor = authorDao.getAuthorById(authorId);
+        if (existingAuthor == null) {
+            System.out.println("Author not found.");
+            return;
+        }
+
+        System.out.println("Enter the updated name of the author:");
+        String updatedName = readStringInput();
+
+        System.out.println("Enter the updated birth year of the author:");
+        int updatedBirthYear = readIntInput();
+
+        // Create a new Author object with the updated details
+        Author updatedAuthor = new Author(updatedName, updatedBirthYear);
+        updatedAuthor.setId(authorId);
+
+
     }
 
+
     private void removeAuthor() {
-        // Implementation for removing an author
+        System.out.println("Enter the ID of the author to remove:");
+        int authorId = readIntInput();
+
+        // Check if the author exists
+        Author author = authorDao.getAuthorById(authorId);
+        if (author == null) {
+            System.out.println("Author with ID " + authorId + " does not exist.");
+            return;
+        }
     }
+
 
     private void addUser() {
         // Implementation for adding a user
@@ -235,7 +340,62 @@ public class TerminalInterface {
     }
 
     private void generateReports() {
-        // Implementation for generating reports
+        System.out.println("Select the type of report to generate:");
+        System.out.println("1. All Authors");
+        System.out.println("2. All Books");
+        System.out.println("3. All Users");
+        System.out.println("4. All Transactions");
+        System.out.print("\nEnter your choice: ");
+        int choice = readIntInput();
+
+        switch (choice) {
+            case 1:
+                getAllAuthors();
+                break;
+            case 2:
+                getAllBooks();
+                break;
+            case 3:
+                userDao.getAllUsers();
+                break;
+            case 4:
+                transactionDao.getAllTransactions();
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    private void getAllAuthors() {
+        List<Author> authors = authorDao.getAllAuthors();
+        if (authors.isEmpty()) {
+            System.out.println("No authors found.");
+        } else {
+            System.out.println("All Authors:");
+            for (Author author : authors) {
+                System.out.println("ID: " + author.getId());
+                System.out.println("Name: " + author.getName());
+                System.out.println("Birth Year: " + author.getBirthYear());
+                System.out.println();
+            }
+        }
+    }
+
+    private void getAllBooks() {
+        List<Book> books = bookDao.getAllBooks();
+        if (books.isEmpty()) {
+            System.out.println("No books found.");
+        } else {
+            System.out.println("\nAll Books:");
+            for (Book book : books) {
+                System.out.println("ID: " + book.getId());
+                System.out.println("Title: " + book.getTitle());
+                System.out.println("Author: " + book.getAuthor());
+                System.out.println("Publication Year: " + book.getPublicationYear());
+                System.out.println("ISBN: " + book.getISBN());
+                System.out.println();
+            }
+        }
     }
 
     private boolean validateISBN(String isbn) {
