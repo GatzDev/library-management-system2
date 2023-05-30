@@ -7,8 +7,9 @@ import java.util.List;
 public interface AuthorDao {
     public void addAuthor(Author author);
     public boolean updateAuthor(Author author);
-    public void removeAuthor(int authorId);
+    public boolean removeAuthor(int authorId);
     public List<Author> getAllAuthors();
 
     Author getAuthorById(int authorId);
+    public List<Author> getMostProlificAuthors(int limit);
 }

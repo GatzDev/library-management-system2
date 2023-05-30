@@ -24,9 +24,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.executeUpdate();
-            System.out.println("User added successfully.");
         } catch (SQLException e) {
-            System.out.println("Failed to add user.");
             e.printStackTrace();
         }
     }
@@ -39,25 +37,23 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
+            statement.setInt(3, user.getId());  // Set the third parameter for user ID
             statement.executeUpdate();
-            System.out.println("User updated successfully.");
         } catch (SQLException e) {
-            System.out.println("Failed to update user.");
             e.printStackTrace();
         }
     }
 
 
+
     @Override
-    public void removeUser(int userId) {
+    public void deleteUser(int userId) {
         try {
             String query = "DELETE FROM users WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.executeUpdate();
-            System.out.println("User removed successfully.");
         } catch (SQLException e) {
-            System.out.println("Failed to remove user.");
             e.printStackTrace();
         }
     }
@@ -89,8 +85,30 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> searchUsers(String keyword) {
-        return null;
+        List<User> users = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM users WHERE name LIKE ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                String email = result.getString("email");
+
+                User user = new User(id, name, email);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to search users.");
+            e.printStackTrace();
+        }
+
+        return users;
     }
+
+
 
     @Override
     public User getUserById(int userId) {
@@ -107,15 +125,44 @@ public class UserDaoImpl implements UserDao {
 
                 return new User(id, name, email);
             } else {
-                throw new IllegalArgumentException("User not found with ID: " + userId);
+                System.out.println("User not found with ID: " + userId);
+                return null;
             }
         } catch (SQLException e) {
             System.out.println("Failed to get user by ID: " + userId);
             e.printStackTrace();
+            return null;
         }
 
-        return null;
     }
+    @Override
+    public List<User> getMostActiveUsers(int limit) {
+        List<User> activeUsers = new ArrayList<>();
+        try {
+            String query = "SELECT users.id, users.name, COUNT(transactions.user_id) AS transaction_count " +
+                    "FROM users " +
+                    "JOIN transactions ON users.id = transactions.user_id " +
+                    "GROUP BY users.id, users.name " +
+                    "ORDER BY transaction_count DESC " +
+                    "LIMIT ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, limit);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int userId = resultSet.getInt("id");
+                String userName = resultSet.getString("name");
+                int transactionCount = resultSet.getInt("transaction_count");
+                User user = new User(userId, userName);
+                user.setTransactionCount(transactionCount);
+                activeUsers.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve most active users.");
+            e.printStackTrace();
+        }
+        return activeUsers;
+    }
+
 
 
 }

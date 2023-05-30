@@ -9,6 +9,11 @@ public class User {
     private String email;
     private List<Book> borrowedBooks;
 
+    private int transactionCount = 0;
+
+
+
+
     public User(int id, String name, String email, List<Book> borrowedBooks) {
         this.id =id;
         this.name = name;
@@ -16,6 +21,11 @@ public class User {
         this.borrowedBooks = borrowedBooks;
     }
 
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+
+    }
     public User(int id, String name, String email) {
         this.id =id;
         this.name = name;
@@ -23,8 +33,26 @@ public class User {
 
     }
 
+    public User(int id, String name) {
+        this.id =id;
+        this.name = name;
+
+    }
+
+    public int getTransactionCount() {
+        return this.transactionCount;
+    }
+
+    public void setTransactionCount(int transactionCount) {
+        this.transactionCount = transactionCount;
+    }
+
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

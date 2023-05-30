@@ -7,12 +7,14 @@ public class Author {
     private int birthYear;
     private List<Book> books;
     private int id;
+    private int bookCount;
 
-    public Author(String name, int birthYear, List<Book> books, int id) {
+    public Author(String name, int birthYear, List<Book> books, int id, int bookCount) {
         this.name = name;
         this.birthYear = birthYear;
         this.books = books;
         this.id = id;
+        this.bookCount = 0;
     }
 
     public Author(int id, String name, int birthYear) {
@@ -26,6 +28,8 @@ public class Author {
         this.name = name;
         this.birthYear = birthYear;
     }
+
+
 
     public String getName() {
         return name;
@@ -59,5 +63,19 @@ public class Author {
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getBookCount(){
+        return bookCount;
+    }
+
+    public void setBookCount(int bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public void incrementBookCount() {
+        bookCount++;
+    }
+
+
 }
 

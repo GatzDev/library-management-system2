@@ -6,6 +6,8 @@ import library_management.Dao.UserDao;
 //import library_management.impl.AuthorDaoImpl;
 import library_management.entity.Author;
 import library_management.entity.Book;
+import library_management.entity.Transaction;
+import library_management.entity.User;
 import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
 import library_management.impl.TransactionDaoImpl;
@@ -13,9 +15,13 @@ import library_management.impl.UserDaoImpl;
 //import library_management.impl.TransactionDaoImpl;
 //import library_management.impl.UserDaoImpl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -24,7 +30,7 @@ import java.util.regex.Pattern;
 public class TerminalInterface {
     private static final String URL = "jdbc:mysql://localhost/data_base";
     private static final String USERNAME = "root";
-    private static final String PASSWORD ="L31mz40123!";
+    private static final String PASSWORD = "L31mz40123!";
     private static final String ISBN_REGEX = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$";
     private static final Pattern ISBN_PATTERN = Pattern.compile(ISBN_REGEX);
     private BookDaoImpl bookDao;
@@ -32,14 +38,17 @@ public class TerminalInterface {
     private UserDao userDao;
     private TransactionDao transactionDao;
     private Scanner scanner;
+    private BufferedReader reader;
+
 
     public TerminalInterface() {
-        scanner = new Scanner(System.in);
+        reader = new BufferedReader(new InputStreamReader(System.in));
+
 
         // Create a database connection
         try {
 
-            Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+            Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
             bookDao = new BookDaoImpl(connection);
             authorDao = new AuthorDaoImpl(connection);
@@ -68,12 +77,13 @@ public class TerminalInterface {
             System.out.println("7. Add User");
             System.out.println("8. Update User");
             System.out.println("9. Remove User");
-            System.out.println("10. Search Books");
-            System.out.println("11. Display Available Books");
-            System.out.println("12. Borrow Book");
-            System.out.println("13. Return Book");
-            System.out.println("14. Generate Reports");
-            System.out.println("15. Exit");
+            System.out.println("10. Search Book");
+            System.out.println("11. Search User");
+            System.out.println("12. Display Available Books");
+            System.out.println("13. Borrow Book");
+            System.out.println("14. Return Book");
+            System.out.println("15. Generate Reports");
+            System.out.println("16. Exit");
             System.out.print("\nEnter your choice: ");
 
             int choice = readIntInput();
@@ -110,20 +120,22 @@ public class TerminalInterface {
                     searchBooks();
                     break;
                 case 11:
-                    displayAvailableBooks();
+                    searchUsers();
                     break;
                 case 12:
-                    borrowBook();
+                    displayAvailableBooks();
                     break;
                 case 13:
-                    returnBook();
+                    borrowBook();
                     break;
                 case 14:
-                    generateReports();
+                    returnBook();
                     break;
                 case 15:
+                    generateReports();
+                    break;
+                case 16:
                     exit();
-                    System.out.println("Thank you for using the Library System!");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -134,16 +146,21 @@ public class TerminalInterface {
     private int readIntInput() {
         while (true) {
             try {
-                String input = scanner.nextLine();
+                String input = reader.readLine();
                 return Integer.parseInt(input);
-            } catch (NumberFormatException e) {
+            } catch (IOException | NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             }
         }
     }
 
     private String readStringInput() {
-        return scanner.nextLine();
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            System.out.println("Error reading input. Please try again.");
+            return null;
+        }
     }
 
 
@@ -183,10 +200,10 @@ public class TerminalInterface {
         int bookId = readIntInput();
 
         // Retrieve the book from the database using the bookId
-          Book bookToUpdate = bookDao.getBookById(bookId);
-           if (bookToUpdate == null) {
-           System.out.println("Book not found.");
-           return;
+        Book bookToUpdate = bookDao.getBookById(bookId);
+        if (bookToUpdate == null) {
+            System.out.println("Book not found.");
+            return;
         }
 
         System.out.println("Enter the new title of the book (or leave blank to keep the existing title):");
@@ -210,7 +227,7 @@ public class TerminalInterface {
         System.out.println("Enter the new ISBN of the book (or leave blank to keep the existing ISBN):");
         String newISBN = readStringInput();
         if (!newISBN.isEmpty()) {
-            // Validate the new ISBN using regex
+
             if (!newISBN.matches(ISBN_REGEX)) {
                 System.out.println("Invalid ISBN format. The book will not be updated.");
                 return;
@@ -227,13 +244,9 @@ public class TerminalInterface {
     }
 
 
-
-
     private void removeBook() {
         System.out.println("Enter the ID of the book to remove:");
-        int bookId = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
-
+        int bookId = readIntInput();
 
         // Remove the book
         boolean removed = bookDao.removeBook(bookId);
@@ -271,18 +284,36 @@ public class TerminalInterface {
             return;
         }
 
-        System.out.println("Enter the updated name of the author:");
+        System.out.println("Enter the new name of the author (or leave blank to keep the existing name):");
         String updatedName = readStringInput();
 
-        System.out.println("Enter the updated birth year of the author:");
+        if (!updatedName.isBlank()) {
+            existingAuthor.setName(updatedName);
+        }
+
+
+        System.out.println("Enter the new birth year of the author (or leave blank to keep the existing birth year):");
         int updatedBirthYear = readIntInput();
+
+        if (updatedBirthYear != 0 ){
+            existingAuthor.setBirthYear(updatedBirthYear);
+        }
+
 
         // Create a new Author object with the updated details
         Author updatedAuthor = new Author(updatedName, updatedBirthYear);
         updatedAuthor.setId(authorId);
 
 
+        // Update the author in the database
+        boolean updated = authorDao.updateAuthor(updatedAuthor);
+        if (updated) {
+            System.out.println("Author updated successfully.");
+        } else {
+            System.out.println("Failed to update the author.");
+        }
     }
+
 
 
     private void removeAuthor() {
@@ -295,19 +326,92 @@ public class TerminalInterface {
             System.out.println("Author with ID " + authorId + " does not exist.");
             return;
         }
+
+        // Remove the author
+        boolean removed = authorDao.removeAuthor(authorId);
+        if (removed) {
+            System.out.println("Author removed successfully.");
+        } else {
+            System.out.println("Failed to remove the author.");
+        }
     }
+
 
 
     private void addUser() {
-        // Implementation for adding a user
+        try {
+            System.out.println("Enter the name of the user:");
+            String name = reader.readLine();
+
+            System.out.println("Enter the email of the user:");
+            String email = reader.readLine();
+
+            User user = new User(name, email);
+
+            userDao.addUser(user);
+            System.out.println("User added successfully!");
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
     }
 
     private void updateUser() {
-        // Implementation for updating a user
+        try{
+        System.out.println("Enter the ID of the user to update:");
+        int userId = Integer.parseInt(reader.readLine());
+
+        // Retrieve the existing user by ID
+        User user = userDao.getUserById(userId);
+
+        if (user == null) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        System.out.println("Enter the new name of the user (or leave blank to keep the existing name):");
+        String newName = reader.readLine();
+
+        if (!newName.isEmpty()) {
+            user.setName(newName);
+        }
+
+        System.out.println("Enter the new email of the user (or leave blank to keep the existing email):");
+        String newEmail = reader.readLine();
+
+        if (!newEmail.isEmpty()) {
+            user.setEmail(newEmail);
+        }
+
+        userDao.updateUser(user);
+        System.out.println("User updated successfully!");
+    } catch(
+    IOException e)
+    {
+        System.out.println("Failed to read user input.");
+        e.printStackTrace();
+    }
     }
 
     private void removeUser() {
-        // Implementation for removing a user
+        try {
+            System.out.println("Enter the ID of the user to remove:");
+            int userId = Integer.parseInt(reader.readLine());
+
+            // Retrieve the existing user by ID
+            User user = userDao.getUserById(userId);
+
+            if (user == null) {
+                System.out.println("User not found.");
+                return;
+            }
+
+            userDao.deleteUser(userId);
+            System.out.println("User removed successfully!");
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
     }
 
     private void searchBooks() {
@@ -322,22 +426,154 @@ public class TerminalInterface {
         } else {
             System.out.println("Books matching the keyword:");
             for (Book book : books) {
+                // Retrieve the author for the book using the author ID
+                Author author = authorDao.getAuthorById(book.getAuthorId());
+
+                // Set the author name for the book
+                book.setAuthor(author.getName());
+
                 System.out.println(book.getTitle() + " by " + book.getAuthor());
             }
         }
     }
 
+    private void searchUsers() {
+        try {
+            System.out.println("Enter the keyword to search for users:");
+            String keyword = reader.readLine();
+
+            List<User> users = userDao.searchUsers(keyword);
+
+            if (users.isEmpty()) {
+                System.out.println("No users found.");
+            } else {
+                System.out.println("Search results:");
+                for (User user : users) {
+                    System.out.println("ID: " + user.getId());
+                    System.out.println("Name: " + user.getName());
+                    System.out.println("Email: " + user.getEmail());
+                    System.out.println();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
+    }
+
+
     private void displayAvailableBooks() {
-        // Implementation for displaying available books
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("\nAvailable Books:");
+        List<Book> availableBooks = bookDao.getAvailableBooks();
+
+        if (availableBooks.isEmpty()) {
+            System.out.println("No books available.");
+        } else {
+            for (Book book : availableBooks) {
+                System.out.println(book.getTitle());
+            }
+        }
     }
 
     private void borrowBook() {
-        // Implementation for borrowing a book
+        try {
+            System.out.println("Enter the ID of the user:");
+            int userId = Integer.parseInt(reader.readLine());
+
+            // Retrieve the existing user by ID
+            User user = userDao.getUserById(userId);
+
+            if (user == null) {
+                System.out.println("User not found.");
+                return;
+            }
+
+            System.out.println("Enter the ID of the book to borrow:");
+            int bookId = Integer.parseInt(reader.readLine());
+
+            // Retrieve the existing book by ID
+            Book book = bookDao.getBookById(bookId);
+
+            if (book == null) {
+                System.out.println("Book not found.");
+                return;
+            }
+
+            // Check if the book is already borrowed
+            if (book.getStock() == 0) {
+                System.out.println("The book is not available for borrowing.");
+                return;
+            }
+
+            // Create a new transaction
+            LocalDate borrowingDate = LocalDate.now();
+            LocalDate returnDate = borrowingDate.plusDays(29);
+            Transaction transaction = new Transaction(userId, bookId, borrowingDate, returnDate);
+            transactionDao.addTransaction(transaction);
+
+            // Update the book availability
+            book.setStock(0); // Assuming 0 represents a borrowed book
+            bookDao.updateBook(book);
+
+            System.out.println("Book borrowed successfully!");
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
     }
 
-    private void returnBook() {
-        // Implementation for returning a book
-    }
+
+
+        private void returnBook() {
+            try {
+                System.out.println("Enter the ID of the user:");
+                int userId = Integer.parseInt(reader.readLine());
+
+                // Retrieve the existing user by ID
+                User user = userDao.getUserById(userId);
+
+                if (user == null) {
+                    System.out.println("User not found.");
+                    return;
+                }
+
+                System.out.println("Enter the ID of the book to return:");
+                int bookId = Integer.parseInt(reader.readLine());
+
+                // Retrieve the existing book by ID
+                Book book = bookDao.getBookById(bookId);
+
+                if (book == null) {
+                    System.out.println("Book not found.");
+                    return;
+                }
+
+                // Check if the book is borrowed by the user
+                Transaction transaction = transactionDao.getTransactionByUserAndBook(user.getId(), book.getId());
+
+                if (transaction == null) {
+                    System.out.println("The book is not borrowed by the user.");
+                    return;
+                }
+
+                // Update the transaction return date
+                transaction.setReturnDate(LocalDate.now());
+                transactionDao.updateTransaction(transaction);
+
+                // Update the book availability
+                book.setStock(1);
+                bookDao.updateBook(book);
+
+                System.out.println("Book returned successfully!");
+            } catch (IOException e) {
+                System.out.println("Failed to read user input.");
+                e.printStackTrace();
+            }
+        }
+
+
 
     private void generateReports() {
         System.out.println("Select the type of report to generate:");
@@ -345,6 +581,9 @@ public class TerminalInterface {
         System.out.println("2. All Books");
         System.out.println("3. All Users");
         System.out.println("4. All Transactions");
+        System.out.println("5. Most Prolific Authors");
+        System.out.println("6. Most Popular Books");
+        System.out.println("7. Most Active Users");
         System.out.print("\nEnter your choice: ");
         int choice = readIntInput();
 
@@ -356,15 +595,25 @@ public class TerminalInterface {
                 getAllBooks();
                 break;
             case 3:
-                userDao.getAllUsers();
+                getAllUsers();
                 break;
             case 4:
-                transactionDao.getAllTransactions();
+                getAllTransactions();
+                break;
+            case 5:
+                getMostProlificAuthors();
+                break;
+            case 6:
+                getMostPopularBooks();
+                break;
+            case 7:
+                mostActiveUsersReport();
                 break;
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
     }
+
 
     private void getAllAuthors() {
         List<Author> authors = authorDao.getAllAuthors();
@@ -390,6 +639,10 @@ public class TerminalInterface {
             for (Book book : books) {
                 System.out.println("ID: " + book.getId());
                 System.out.println("Title: " + book.getTitle());
+                //????   Retrieve the author for the book using the author ID
+                Author author = authorDao.getAuthorById(book.getAuthorId());
+                //????   Set the author name for the book
+                book.setAuthor(author.getName());
                 System.out.println("Author: " + book.getAuthor());
                 System.out.println("Publication Year: " + book.getPublicationYear());
                 System.out.println("ISBN: " + book.getISBN());
@@ -398,12 +651,120 @@ public class TerminalInterface {
         }
     }
 
-    private boolean validateISBN(String isbn) {
-        return ISBN_PATTERN.matcher(isbn).matches();
+    private void getAllUsers() {
+        List<User> users = userDao.getAllUsers();
+
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+        } else {
+            System.out.println("Users:");
+            for (User user : users) {
+                System.out.println("ID: " + user.getId());
+                System.out.println("Name: " + user.getName());
+                System.out.println("Email: " + user.getEmail());
+                System.out.println();
+            }
+        }
     }
 
+    private void getAllTransactions() {
+        List<Transaction> transactions = transactionDao.getAllTransactions();
+
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found.");
+        } else {
+            System.out.println("Transactions:");
+            for (Transaction transaction : transactions) {
+                System.out.println("ID: " + transaction.getId());
+                System.out.println("User ID: " + transaction.getUser().getId());
+                System.out.println("Book ID: " + transaction.getBook().getId());
+                System.out.println("Return Date: " + transaction.getReturnDate());
+                System.out.println();
+            }
+        }
+    }
+
+    private void getMostProlificAuthors() {
+        System.out.println("Enter the limit for the number of authors:");
+        try {
+            int limit = Integer.parseInt(reader.readLine());
+
+            List<Author> authors = authorDao.getMostProlificAuthors(limit);
+
+            if (authors.isEmpty()) {
+                System.out.println("No authors found.");
+            } else {
+                System.out.println("Most Prolific Authors:");
+                for (Author author : authors) {
+                    System.out.println("Author ID: " + author.getId());
+                    System.out.println("Author Name: " + author.getName());
+                    System.out.println("Book Count: " + author.getBookCount());
+                    System.out.println();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
+    }
+
+    private void getMostPopularBooks() {
+        System.out.println("Enter the limit for the number of books:");
+        try {
+            int limit = Integer.parseInt(reader.readLine());
+
+            List<Book> popularBooks = bookDao.getMostPopularBooks(limit);
+
+            if (popularBooks.isEmpty()) {
+                System.out.println("No popular books found.");
+            } else {
+                System.out.println("Most Popular Books:");
+                for (Book book : popularBooks) {
+                    System.out.println("Book ID: " + book.getId());
+                    System.out.println("Book Title: " + book.getTitle());
+                    System.out.println("Transaction Count: " + book.getTransactionCount());
+                    System.out.println();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
+    }
+
+    private void mostActiveUsersReport() {
+        System.out.println("Enter the limit for the number of active users:");
+        try {
+            int limit = Integer.parseInt(reader.readLine());
+
+            List<User> activeUsers = userDao.getMostActiveUsers(limit);
+
+            if (activeUsers.isEmpty()) {
+                System.out.println("No active users found.");
+            } else {
+                System.out.println("Most Active Users:");
+                for (User user : activeUsers) {
+                    System.out.println("User ID: " + user.getId());
+                    System.out.println("User Name: " + user.getName());
+                    System.out.println("Transaction Count: " + user.getTransactionCount());
+                    System.out.println();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to read user input.");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
     private void exit() {
-        scanner.close();
+        System.out.println("Exiting the application...");
+        System.out.println("Thank you for using the Library System!");
+        System.exit(0);
     }
 }
 

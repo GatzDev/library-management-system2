@@ -11,6 +11,7 @@ public interface BookDao {
     public List<Book> searchBooks(String keyword);
     public List<Book> getAllBooks();
     public Book getBookById(int bookId);
+    List<Book> getAvailableBooks();
+    public List<Book> getMostPopularBooks(int limit) ;
 
-
-    }
+}

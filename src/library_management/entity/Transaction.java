@@ -1,11 +1,22 @@
 package library_management.entity;
 
+import library_management.Dao.BookDao;
+import library_management.impl.BookDaoImpl;
+
 import java.time.LocalDate;
 
 public class Transaction {
     private int id;
+
+    private int userId;
+
+    private int bookId;
     private User user;
     private Book book;
+
+
+
+
     private LocalDate borrowingDate;
     private LocalDate returnDate;
 
@@ -17,16 +28,39 @@ public class Transaction {
         this.returnDate = returnDate;
     }
 
+
     public Transaction(int id, int userId, int bookId, LocalDate borrowingDate, LocalDate returnDate) {
 
     }
+
+    public Transaction(int userId, int bookId, LocalDate borrowingDate, LocalDate returnDate) {
+        this.userId = userId;
+        this.bookId = bookId;
+        this.borrowingDate = borrowingDate;
+        this.returnDate = returnDate;
+
+    }
+
+    public int getUserId() {
+        return this.userId;
+    }
+
+
+    public int getBookId() {
+        return this.bookId;
+    }
+
+
+
+
+
 
     public int getId() {
         return this.id;
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public void setUser(User user) {

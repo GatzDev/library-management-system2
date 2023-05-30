@@ -7,9 +7,10 @@ import java.util.List;
 public interface UserDao {
     void addUser(User user);
     void updateUser(User user);
-    void removeUser(int userId);
+    void deleteUser(int userId);
     User getUserById(int userId);
     List<User> getAllUsers();
     List<User> searchUsers(String keyword);
+    public List<User> getMostActiveUsers(int limit);
 
 }

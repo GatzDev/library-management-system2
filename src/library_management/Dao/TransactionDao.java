@@ -11,7 +11,6 @@ public interface TransactionDao {
     void removeTransaction(int transactionId);
     Transaction getTransactionById(int transactionId);
     List<Transaction> getAllTransactions();
-    List<Transaction> getTransactionsByUser(int userId);
-    List<Transaction> getTransactionsByBook(int bookId);
-    List<Transaction> getTransactionsByDate(LocalDate date);
+    Transaction getTransactionByUserAndBook(int userId, int bookId);
+
 }

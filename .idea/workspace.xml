@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My first commit">
-      <change afterPath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/impl/AuthorDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/impl/TransactionDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/impl/UserDaoImpl.java" afterDir="false" />
+    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My second commit">
+      <change afterPath="$PROJECT_DIR$/src/library_management/Test/BookDaoImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/CreateTableDatabase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/library management system.iml" beforeDir="false" afterPath="$PROJECT_DIR$/library management system.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/Dao/AuthorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/AuthorDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/Dao/BookDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/BookDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/Dao/TransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/TransactionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/Dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/UserDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controller/AuthorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/AuthorDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/BookDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controller/TransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/TransactionDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controllerImpl/AuthorControllerImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controllerImpl/BookControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/BookDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controllerImpl/TransactionControllerImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/controllerImpl/UserControllerImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/model/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/model/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/entity/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Author.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/entity/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/impl/AuthorDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/AuthorDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/impl/BookDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/BookDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/impl/TransactionDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/TransactionDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/UserDaoImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,37 +72,94 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.library_management.Main">
-    <configuration name="library_management.CreateTableInDataBase" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="library_management.CreateTableInDataBase" />
+  <component name="RunManager" selected="JUnit.BookDaoImplTest.testGetMostPopularBooks">
+    <configuration name="BookDaoImplTest.GetAllBooks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="library management system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="library_management.entity.*" />
+          <option name="PATTERN" value="library_management.Test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="library_management.Test" />
+      <option name="MAIN_CLASS_NAME" value="library_management.Test.BookDaoImplTest" />
+      <option name="METHOD_NAME" value="GetAllBooks" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="library_management.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="library_management.Main" />
+    <configuration name="BookDaoImplTest.GetBookById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="library management system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="library_management.Dao.*" />
+          <option name="PATTERN" value="library_management.Test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="library_management.Test" />
+      <option name="MAIN_CLASS_NAME" value="library_management.Test.BookDaoImplTest" />
+      <option name="METHOD_NAME" value="GetBookById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookDaoImplTest.getAvailableBooks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="library management system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="library_management.Test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="library_management.Test" />
+      <option name="MAIN_CLASS_NAME" value="library_management.Test.BookDaoImplTest" />
+      <option name="METHOD_NAME" value="getAvailableBooks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookDaoImplTest.testGetMostPopularBooks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="library management system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="library_management.Test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="library_management.Test" />
+      <option name="MAIN_CLASS_NAME" value="library_management.Test.BookDaoImplTest" />
+      <option name="METHOD_NAME" value="testGetMostPopularBooks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookDaoImplTest.testRemoveBook" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="library management system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="library_management.Test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="library_management.Test" />
+      <option name="MAIN_CLASS_NAME" value="library_management.Test.BookDaoImplTest" />
+      <option name="METHOD_NAME" value="testRemoveBook" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.library_management.Main" />
-        <item itemvalue="Application.library_management.CreateTableInDataBase" />
+        <item itemvalue="JUnit.BookDaoImplTest.testGetMostPopularBooks" />
+        <item itemvalue="JUnit.BookDaoImplTest.getAvailableBooks" />
+        <item itemvalue="JUnit.BookDaoImplTest.testRemoveBook" />
+        <item itemvalue="JUnit.BookDaoImplTest.GetAllBooks" />
+        <item itemvalue="JUnit.BookDaoImplTest.GetBookById" />
       </list>
     </recent_temporary>
   </component>
@@ -125,7 +179,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685010217546</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="My second commit">
+      <created>1685117191685</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1685117191685</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -141,7 +202,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="My first commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="My first commit" />
+    <MESSAGE value="My second commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="My second commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -15,7 +15,7 @@ public class Main {
                 library_management.CreateTableInDataBase.main(args);
                 getMenuChoice();
             } else if (choice == 3) {
-                System.out.println("Exiting... Goodbye!");
+                System.out.println("Exiting the application...  Goodbye!");
             } else {
                 System.out.println("Invalid choice. Please try again.");
                 getMenuChoice();

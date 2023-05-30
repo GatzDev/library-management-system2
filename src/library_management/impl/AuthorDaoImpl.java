@@ -40,30 +40,34 @@ public class AuthorDaoImpl implements AuthorDao {
             statement.setInt(2, author.getBirthYear());
             statement.setInt(3, author.getId());
             statement.executeUpdate();
-            System.out.println("Author updated successfully.");
+            return true;
         } catch (SQLException e) {
-            System.out.println("Failed to update author.");
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 
     @Override
-    public void removeAuthor(int authorId) {
+    public boolean removeAuthor(int authorId) {
         String deleteAuthorQuery = "DELETE FROM authors WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(deleteAuthorQuery)) {
             statement.setInt(1, authorId);
             int rowsAffected = statement.executeUpdate();
+            return true;
 
-            if (rowsAffected > 0) {
-                System.out.println("Author with ID " + authorId + " has been removed successfully.");
-            } else {
-                System.out.println("Author with ID " + authorId + " does not exist.");
-            }
+//            if (rowsAffected > 0) {
+//                System.out.println("Author with ID " + authorId + " has been removed successfully.");
+//                return true;
+//            } else {
+//                System.out.println("Author with ID " + authorId + " does not exist.");
+//                return false;
+//            }
+
         } catch (SQLException e) {
             System.out.println("An error occurred while deleting the author: " + e.getMessage());
+            return false;
         }
     }
 
@@ -116,6 +120,35 @@ public class AuthorDaoImpl implements AuthorDao {
 
         return null;
     }
+
+    @Override
+    public List<Author> getMostProlificAuthors(int limit) {
+        List<Author> authors = new ArrayList<>();
+        try {
+            String query = "SELECT authors.id, authors.name, COUNT(books.author_id) AS book_count " +
+                    "FROM authors " +
+                    "JOIN books ON authors.id = books.author_id " +
+                    "GROUP BY authors.id, authors.name " +
+                    "ORDER BY book_count DESC " +
+                    "LIMIT ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, limit);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int authorId = resultSet.getInt("id");
+                String authorName = resultSet.getString("name");
+                int bookCount = resultSet.getInt("book_count");
+                Author author = new Author(authorId, authorName, 0);
+                author.setBookCount(bookCount);
+                authors.add(author);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve most prolific authors.");
+            e.printStackTrace();
+        }
+        return authors;
+    }
+
 
 }
 
