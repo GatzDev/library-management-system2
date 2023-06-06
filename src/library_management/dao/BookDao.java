@@ -1,4 +1,4 @@
-package library_management.Dao;
+package library_management.dao;
 
 import library_management.entity.Book;
 
@@ -13,5 +13,5 @@ public interface BookDao {
     public Book getBookById(int bookId);
     List<Book> getAvailableBooks();
     public List<Book> getMostPopularBooks(int limit) ;
-
+    int getBooksByAuthorId(int id);
 }

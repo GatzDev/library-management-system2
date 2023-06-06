@@ -1,36 +1,29 @@
 package library_management.entity;
 
+import library_management.util.Constants;
 
-import java.util.List;
+public class Book extends BaseEntity{
 
-public class Book {
-
-    public static final String validateISBN = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$";
-
-    private int id ;
     private String title;
     private String author;
     private int author_id;
     private int publicationYear;
     private String ISBN;
     private int stock = 1;
-
     private int transactionCount = 0;
 
 
-
-
     public Book(int id, String title, int author_id, int publicationYear, String ISBN, int stock) {
-            this.id = id;
-            this.title = title;
-            this.author_id = author_id;
-            this.publicationYear = publicationYear;
-            this.ISBN = ISBN;
-            this.stock = stock;
-
+        super(id);
+        this.title = title;
+        this.author_id = author_id;
+        this.publicationYear = publicationYear;
+        this.ISBN = ISBN;
+        this.stock = stock;
     }
 
     public Book(String title, int author_id, int publicationYear, String ISBN) {
+        super(0);
         this.title = title;
         this.author_id = author_id;
         this.publicationYear = publicationYear;
@@ -38,77 +31,78 @@ public class Book {
     }
 
     public Book(int id, String title) {
-        this.id = id;
+        super(id);
         this.title = title;
     }
 
-
-    // Getters and Setters
+    public Book(int bookId, String title, int authorId) {
+        super(0);
+    }
 
 
     public int getTransactionCount() {
         return this.transactionCount;
-        }
+    }
 
-        public void setTransactionCount(int transactionCount) {
+    public void setTransactionCount(int transactionCount) {
         this.transactionCount = transactionCount;
-        }
+    }
 
     public int getId() {
-            return this.id;
-        }
+        return this.id;
+    }
 
-        public void setId(int id) {
+    public void setId(int id) {
         this.id = id;
-        }
+    }
 
-        public String getTitle() {
-            return title;
-        }
+    public String getTitle() {
+        return title;
+    }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-        public String getAuthor() {
-            return author;
-        }
+    public String getAuthor() {
+        return author;
+    }
 
-         public int getAuthorId() {
+    public int getAuthorId() {
         return author_id;
-        }
+    }
 
-        public void setAuthor(String author) {
+    public void setAuthor(String author) {
         this.author = author;
-        }
+    }
 
-        public void setAuthorId(int author_id) {
-            this.author_id = author_id;
-        }
+    public int getPublicationYear() {
+        return publicationYear;
+    }
 
-        public int getPublicationYear() {
-            return publicationYear;
-        }
+    public void setPublicationYear(int publicationYear) {
+        this.publicationYear = publicationYear;
+    }
 
-        public void setPublicationYear(int publicationYear) {
-            this.publicationYear = publicationYear;
-        }
+    public String getISBN() {
+        return ISBN;
+    }
 
-        public String getISBN() {
-            return ISBN;
+    public void setISBN(String ISBN) {
+        if (Constants.ISBN_PATTERN.matcher(ISBN).matches()){
+        this.ISBN = ISBN;
+        } else {
+            throw new IllegalArgumentException("Invalid ISBN format.");
         }
+    }
 
-        public void setISBN(String ISBN) {
-            this.ISBN = ISBN;
-        }
+    public int getStock() {
+        return stock;
+    }
 
-        public int getStock() {
-            return stock;
-        }
-
-        public void setStock(int stock) {
-            this.stock = stock;
-        }
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
 
     @Override
@@ -139,6 +133,5 @@ public class Book {
     }
 
 
-
-    }
+}
 

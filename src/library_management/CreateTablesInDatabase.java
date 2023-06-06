@@ -1,5 +1,5 @@
 package library_management;
-import library_management.util.DatabaseConfig;
+import library_management.util.Constants;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,10 +15,10 @@ class CreateTableInDataBase {
 
 
         try {
-            System.out.println(DatabaseConfig.URL);
+            System.out.println(Constants .URL);
 
             System.out.println("Connecting to selected database ...");
-            Connection conn = DriverManager.getConnection(DatabaseConfig.URL,DatabaseConfig.USERNAME,DatabaseConfig.PASSWORD);
+            Connection conn = DriverManager.getConnection(Constants .URL,Constants .USERNAME, Constants.PASSWORD);
             System.out.println("Connected to database successfully ...");
             System.out.println("Creating tables in selected database");
             createTables(conn);

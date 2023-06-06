@@ -1,8 +1,7 @@
-package library_management.Dao;
+package library_management.dao;
 
 import library_management.entity.Transaction;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionDao {

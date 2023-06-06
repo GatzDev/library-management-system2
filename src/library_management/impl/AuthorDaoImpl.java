@@ -1,8 +1,6 @@
 package library_management.impl;
-
-import library_management.Dao.AuthorDao;
+import library_management.dao.AuthorDao;
 import library_management.entity.Author;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,6 @@ public class AuthorDaoImpl implements AuthorDao {
     public AuthorDaoImpl(Connection connection) {
         this.connection = connection;
     }
-
 
     @Override
     public void addAuthor(Author author) {
@@ -97,6 +94,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author getAuthorById(int authorId) {
+        Author author = null;
+
         try {
             String query = "SELECT * FROM authors WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -108,17 +107,15 @@ public class AuthorDaoImpl implements AuthorDao {
                 String name = resultSet.getString("name");
                 int birthYear = resultSet.getInt("birth_year");
 
-                Author author = new Author(name, birthYear);
+                author = new Author(name, birthYear);
                 author.setId(authorId);
-
-                return author;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return author;
     }
 
     @Override
@@ -148,6 +145,35 @@ public class AuthorDaoImpl implements AuthorDao {
         }
         return authors;
     }
+
+    @Override
+    public List<Author> searchAuthor(String keyword) {
+        List<Author> authors = new ArrayList<>();
+
+        try {
+            String query = "SELECT * FROM authors WHERE name LIKE ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + keyword + "%");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int authorId = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                int birthYear = resultSet.getInt("birth_year");
+
+                Author author = new Author(authorId, name, birthYear);
+                authors.add(author);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return authors;
+    }
+
 
 
 }

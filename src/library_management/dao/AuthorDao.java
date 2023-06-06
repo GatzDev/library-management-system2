@@ -1,4 +1,4 @@
-package library_management.Dao;
+package library_management.dao;
 
 import library_management.entity.Author;
 
@@ -9,7 +9,8 @@ public interface AuthorDao {
     public boolean updateAuthor(Author author);
     public boolean removeAuthor(int authorId);
     public List<Author> getAllAuthors();
-
     Author getAuthorById(int authorId);
     public List<Author> getMostProlificAuthors(int limit);
+    List<Author> searchAuthor(String keyword);
+
 }

@@ -1,8 +1,6 @@
 package library_management.impl;
-
 import library_management.entity.Book;
-import library_management.Dao.BookDao;
-
+import library_management.dao.BookDao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +142,7 @@ public class BookDaoImpl implements BookDao {
                 return extractBookFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve the book by ID.");
+            System.out.println("Failed to retrieve the book by ID." + bookId + ". Error: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -218,6 +216,31 @@ public class BookDaoImpl implements BookDao {
         }
         return popularBooks;
     }
+
+    @Override
+    public int getBooksByAuthorId(int authorId) {
+        int bookCount = 0;
+
+        try {
+            String query = "SELECT COUNT(*) AS book_count FROM books WHERE author_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, authorId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                bookCount = resultSet.getInt("book_count");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bookCount;
+    }
+
+
 
 
 

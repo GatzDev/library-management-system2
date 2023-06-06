@@ -1,11 +1,10 @@
 package library_management.impl;
-
-import library_management.Dao.UserDao;
+import library_management.dao.UserDao;
 import library_management.entity.User;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UserDaoImpl implements UserDao {
@@ -31,7 +30,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public void updateUser(User user) {
+    public boolean updateUser(User user) {
         try {
             String query = "UPDATE users SET name = ?, email = ? WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
@@ -39,22 +38,27 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, user.getEmail());
             statement.setInt(3, user.getId());  // Set the third parameter for user ID
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
 
 
     @Override
-    public void deleteUser(int userId) {
+    public boolean deleteUser(int userId) {
         try {
             String query = "DELETE FROM users WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.executeUpdate();
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -101,7 +105,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
-            System.out.println("Failed to search users.");
+            System.out.println("Failed to search users : " + keyword + ". Error: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -129,12 +133,12 @@ public class UserDaoImpl implements UserDao {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Failed to get user by ID: " + userId);
+            System.out.println("Failed to get user by ID: " + userId + ". Error: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
-
     }
+
     @Override
     public List<User> getMostActiveUsers(int limit) {
         List<User> activeUsers = new ArrayList<>();
@@ -162,6 +166,8 @@ public class UserDaoImpl implements UserDao {
         }
         return activeUsers;
     }
+
+
 
 
 

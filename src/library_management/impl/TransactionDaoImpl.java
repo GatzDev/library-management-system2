@@ -1,17 +1,14 @@
 package library_management.impl;
-
-import library_management.Dao.BookDao;
-import library_management.Dao.TransactionDao;
-import library_management.Dao.UserDao;
+import library_management.dao.BookDao;
+import library_management.dao.TransactionDao;
+import library_management.dao.UserDao;
 import library_management.entity.Book;
 import library_management.entity.Transaction;
 import library_management.entity.User;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TransactionDaoImpl implements TransactionDao {
     private Connection connection;
