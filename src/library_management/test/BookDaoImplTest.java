@@ -29,13 +29,13 @@ public class BookDaoImplTest {
 
     @Test
     public void testAddBook() {
-        Book book = new Book(11,"title11", 1, 2013, "isbn43332", 1);
+        Book book = new Book(11, "title11", 1, 2013, "isbn43332", 1);
         assertTrue(bookDao.addBook(book));
     }
 
     @Test
     public void testUpdateBook() {
-        Book book = new Book(60,"title", 1, 2023, "isbn", 1);
+        Book book = new Book(60, "title", 1, 2023, "isbn", 1);
         bookDao.addBook(book);
         book.setTitle("new title");
         assertTrue(bookDao.updateBook(book));
@@ -44,7 +44,7 @@ public class BookDaoImplTest {
     @Test
     public void testRemoveBook() {
         // Arrange
-        Book book = new Book(62,"tdfdf", 2,2001,"ISBN4565654",1);
+        Book book = new Book(62, "tdfdf", 2, 2001, "ISBN4565654", 1);
         int bookId = 62; // assign a book id
         bookDao.addBook(book);
 
@@ -132,23 +132,23 @@ public class BookDaoImplTest {
         }
     }
 
-        @Test
-        public void testGetBooksByAuthorId() {
-            // Arrange
-            int authorId = 6;
-            Book book1 = new Book(1, "Book By Author Id 1", authorId, 2012, "456546546", 1);
-            Book book2 = new Book(2, "Book By Author Id 2", authorId, 2013, "45645654456", 3);
-            Book book3 = new Book(3, "Book By Author Id 3", 2, 2011, "45645456450", 2);
-            bookDao.addBook(book1);
-            bookDao.addBook(book2);
-            bookDao.addBook(book3);
+    @Test
+    public void testGetBooksByAuthorId() {
+        // Arrange
+        int authorId = 6;
+        Book book1 = new Book(1, "Book By Author Id 1", authorId, 2012, "456546546", 1);
+        Book book2 = new Book(2, "Book By Author Id 2", authorId, 2013, "45645654456", 3);
+        Book book3 = new Book(3, "Book By Author Id 3", 2, 2011, "45645456450", 2);
+        bookDao.addBook(book1);
+        bookDao.addBook(book2);
+        bookDao.addBook(book3);
 
-            // Act
-            int bookCount = bookDao.getBooksByAuthorId(authorId);
+        // Act
+        int bookCount = bookDao.getBooksByAuthorId(authorId);
 
-            // Assert
-            assertEquals(2, bookCount);
-        }
+        // Assert
+        assertEquals(2, bookCount);
+    }
 
     @Test
     public void testGetMostPopularBooks() {
@@ -173,8 +173,6 @@ public class BookDaoImplTest {
         assertEquals(book3.getTitle(), popularBooks.get(1).getTitle());
         assertEquals(book2.getTitle(), popularBooks.get(2).getTitle());
     }
-
-
 }
 
 

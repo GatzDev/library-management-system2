@@ -1,5 +1,5 @@
 package library_management.test;
-import library_management.entity.User;
+
 import org.junit.jupiter.api.Assertions;
 import library_management.dao.AuthorDao;
 import library_management.entity.Author;

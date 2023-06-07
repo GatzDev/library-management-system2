@@ -16,10 +16,10 @@ public class AuthorDaoImpl implements AuthorDao {
     public void addAuthor(Author author) {
         try {
             String query = "INSERT INTO authors (name, birth_year) VALUES (?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, author.getName());
-            statement.setInt(2, author.getBirthYear());
-            statement.executeUpdate();
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setString(1, author.getName());
+            sta.setInt(2, author.getBirthYear());
+            sta.executeUpdate();
             System.out.println("Author added successfully.");
         } catch (SQLException e) {
             System.out.println("Failed to add author.");
@@ -27,16 +27,15 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-
     @Override
     public boolean updateAuthor(Author author) {
         try {
             String query = "UPDATE authors SET name = ?, birth_year = ? WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, author.getName());
-            statement.setInt(2, author.getBirthYear());
-            statement.setInt(3, author.getId());
-            statement.executeUpdate();
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setString(1, author.getName());
+            sta.setInt(2, author.getBirthYear());
+            sta.setInt(3, author.getId());
+            sta.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,43 +43,32 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-
     @Override
     public boolean removeAuthor(int authorId) {
         String deleteAuthorQuery = "DELETE FROM authors WHERE id = ?";
 
-        try (PreparedStatement statement = connection.prepareStatement(deleteAuthorQuery)) {
-            statement.setInt(1, authorId);
-            int rowsAffected = statement.executeUpdate();
+        try (PreparedStatement sta = connection.prepareStatement(deleteAuthorQuery)) {
+            sta.setInt(1, authorId);
             return true;
 
-//            if (rowsAffected > 0) {
-//                System.out.println("Author with ID " + authorId + " has been removed successfully.");
-//                return true;
-//            } else {
-//                System.out.println("Author with ID " + authorId + " does not exist.");
-//                return false;
-//            }
-
         } catch (SQLException e) {
-            System.out.println("An error occurred while deleting the author: " + e.getMessage());
+            System.out.println("Error while deleting the author: " + e.getMessage());
             return false;
         }
     }
-
 
     @Override
     public List<Author> getAllAuthors() {
         List<Author> authors = new ArrayList<>();
         try {
             String query = "SELECT * FROM authors";
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
+            Statement sta = connection.createStatement();
+            ResultSet result = sta.executeQuery(query);
+            while (result.next()) {
                 Author author = new Author(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("birth_year")
+                        result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("birth_year")
                 );
                 authors.add(author);
             }
@@ -91,21 +79,20 @@ public class AuthorDaoImpl implements AuthorDao {
         return authors;
     }
 
-
     @Override
     public Author getAuthorById(int authorId) {
         Author author = null;
 
         try {
             String query = "SELECT * FROM authors WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, authorId);
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setInt(1, authorId);
 
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet result = sta.executeQuery();
 
-            if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                int birthYear = resultSet.getInt("birth_year");
+            if (result.next()) {
+                String name = result.getString("name");
+                int birthYear = result.getInt("birth_year");
 
                 author = new Author(name, birthYear);
                 author.setId(authorId);
@@ -128,13 +115,13 @@ public class AuthorDaoImpl implements AuthorDao {
                     "GROUP BY authors.id, authors.name " +
                     "ORDER BY book_count DESC " +
                     "LIMIT ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, limit);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int authorId = resultSet.getInt("id");
-                String authorName = resultSet.getString("name");
-                int bookCount = resultSet.getInt("book_count");
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setInt(1, limit);
+            ResultSet result = sta.executeQuery();
+            while (result.next()) {
+                int authorId = result.getInt("id");
+                String authorName = result.getString("name");
+                int bookCount = result.getInt("book_count");
                 Author author = new Author(authorId, authorName, 0);
                 author.setBookCount(bookCount);
                 authors.add(author);
@@ -152,29 +139,26 @@ public class AuthorDaoImpl implements AuthorDao {
 
         try {
             String query = "SELECT * FROM authors WHERE name LIKE ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, "%" + keyword + "%");
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setString(1, "%" + keyword + "%");
+            ResultSet result = sta.executeQuery();
 
-            while (resultSet.next()) {
-                int authorId = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                int birthYear = resultSet.getInt("birth_year");
+            while (result.next()) {
+                int authorId = result.getInt("id");
+                String name = result.getString("name");
+                int birthYear = result.getInt("birth_year");
 
                 Author author = new Author(authorId, name, birthYear);
                 authors.add(author);
             }
 
-            resultSet.close();
-            statement.close();
+            result.close();
+            sta.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return authors;
     }
-
-
-
 }
 

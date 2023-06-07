@@ -9,7 +9,7 @@ public interface TransactionDao {
     void updateTransaction(Transaction transaction);
     void removeTransaction(int transactionId);
     Transaction getTransactionById(int transactionId);
-    List<Transaction> getAllTransactions();
+    List<Transaction> getAllTransactions(UserDao userDao, BookDao bookDao);
     Transaction getTransactionByUserAndBook(int userId, int bookId);
 
 }

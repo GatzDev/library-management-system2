@@ -1,4 +1,5 @@
 package library_management;
+
 import library_management.util.FileHandler;
 import library_management.util.Input;
 
@@ -10,46 +11,46 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int choice = getMenuChoice();
 
         if (choice == 1) {
-                TerminalInterface terminalInterface = new TerminalInterface();
-                terminalInterface.run();
-            } else if (choice == 2) {
-                library_management.CreateTableInDataBase.main(args);
-                getMenuChoice();
-            }else if (choice == 3) {
+            TerminalInterface terminalInterface = new TerminalInterface();
+            terminalInterface.run();
+        } else if (choice == 2) {
+            library_management.CreateTableInDataBase.main(args);
+            getMenuChoice();
+        } else if (choice == 3) {
             System.out.println("Enter the file path to read from:");
             String readFilePath = Input.readStringInput(reader);
 
-                try {
+            try {
                 FileHandler.readFromFile(readFilePath);
-                }catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Error reading from file: " + e.getMessage());
-                    getMenuChoice();
-                }
-            }else if (choice == 4) {
+                getMenuChoice();
+            }
+        } else if (choice == 4) {
             System.out.println("Enter the file path to write to:");
             String writeFilePath = Input.readStringInput(reader);
             List<String> lines = new ArrayList<>();
-            // Add lines to the list (e.g., from user input or other sources)
-                try {
+            // Add lines from user input or other sources
+            try {
                 FileHandler.writeToFile(lines, writeFilePath);
                 System.out.println("File written successfully.");
-                }catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("Error writing to file: " + e.getMessage());
-                    getMenuChoice();
-                }
-            } else if (choice == 5) {
-                System.out.println("Exiting the application...  Goodbye!");
-            } else {
-                System.out.println("Invalid choice. Please try again.");
                 getMenuChoice();
             }
+        } else if (choice == 5) {
+            System.out.println("Exiting the application...  Goodbye!");
+        } else {
+            System.out.println("Invalid choice. Please try again.");
+            getMenuChoice();
         }
+    }
 
     private static int getMenuChoice() {
         System.out.println("\nWelcome to the Library System!\n");
@@ -64,6 +65,4 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
-
-
 }

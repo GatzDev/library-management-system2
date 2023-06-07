@@ -23,11 +23,10 @@ public class BookMenu {
     private BookDao bookDao;
     private AuthorDao authorDao;
 
-    public  BookMenu(AuthorDao authorDao) {
+    public BookMenu(AuthorDao authorDao) {
         reader = new BufferedReader(new InputStreamReader(System.in));
         this.authorDao = authorDao;
 
-        // Create a database connection
         try {
             Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
             bookDao = new BookDaoImpl(connection);
@@ -35,7 +34,6 @@ public class BookMenu {
                 SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
-
         }
     }
 
@@ -46,6 +44,7 @@ public class BookMenu {
         System.out.println("3. Remove Book");
         System.out.println("4. Search Book");
         System.out.println("5. Available Book");
+        System.out.println("6. Return to Previous Menu");
         System.out.print("Enter your choice: ");
 
         int choice = readIntInput(reader);
@@ -63,9 +62,11 @@ public class BookMenu {
             case 4:
                 searchBooks();
                 break;
-                case 5:
-                    availableBooks();
+            case 5:
+                availableBooks();
                 break;
+            case 6:
+                return;
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
@@ -84,16 +85,14 @@ public class BookMenu {
         System.out.println("Enter the ISBN of the book:");
         String isbn = Input.readStringInput(reader);
 
-        // Validate the ISBN using regex
+        // Validate the ISBN
         if (!isbn.matches(Constants.ISBN_REGEX)) {
             System.out.println("Invalid ISBN format. Please enter a valid ISBN.");
             return;
         }
 
-        // Create a new Book object with the user-provided details
         Book book = new Book(title, author_id, publicationYear, isbn);
 
-        // Call the addBook method of the BookDao instance to add the book to the database
         if (bookDao.addBook(book)) {
             System.out.println("Book added successfully.");
         } else {
@@ -101,12 +100,11 @@ public class BookMenu {
         }
     }
 
-
     private void updateBook() {
         System.out.println("Enter the ID of the book to update:");
         int bookId = Input.readIntInput(reader);
 
-        // Retrieve the book from the database using the bookId
+        // Take the book from the database using the bookId
         Book bookToUpdate = bookDao.getBookById(bookId);
         if (bookToUpdate == null) {
             System.out.println("Book not found.");
@@ -150,12 +148,10 @@ public class BookMenu {
         }
     }
 
-
     private void removeBook() {
         System.out.println("Enter the ID of the book to remove:");
         int bookId = Input.readIntInput(reader);
 
-        // Remove the book
         boolean removed = bookDao.removeBook(bookId);
         if (removed) {
             System.out.println("Book removed successfully.");
@@ -176,10 +172,8 @@ public class BookMenu {
         } else {
             System.out.println("Books matching the keyword:");
             for (Book book : books) {
-                // Retrieve the author for the book using the author ID
                 Author author = authorDao.getAuthorById(book.getAuthorId());
 
-                // Set the author name for the book
                 book.setAuthor(author.getName());
 
                 System.out.println(book.getTitle() + " by " + book.getAuthor());
@@ -188,7 +182,6 @@ public class BookMenu {
     }
 
     private void availableBooks() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("\nAvailable Books:");
         List<Book> availableBooks = bookDao.getAvailableBooks();

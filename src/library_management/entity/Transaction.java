@@ -41,11 +41,9 @@ public class Transaction extends BaseEntity{
         return this.userId;
     }
 
-
     public int getBookId() {
         return this.bookId;
     }
-
 
     public int getId() {
         return this.id;
@@ -80,6 +78,17 @@ public class Transaction extends BaseEntity{
     }
 
     @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", bookId=" + bookId +
+                ", borrowingDate=" + borrowingDate +
+                ", returnDate=" + returnDate +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -91,27 +100,13 @@ public class Transaction extends BaseEntity{
         return id == other.id &&
                 userId == other.userId &&
                 bookId == other.bookId &&
-                borrowingDate.equals(other.borrowingDate) &&
-                returnDate.equals(other.returnDate);
+                Objects.equals(borrowingDate, other.borrowingDate) &&
+                Objects.equals(returnDate, other.returnDate);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, userId, bookId, borrowingDate, returnDate);
     }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", bookId=" + bookId +
-                ", borrowingDate=" + borrowingDate +
-                ", returnDate=" + returnDate +
-                '}';
-    }
-
-
-
 }
 

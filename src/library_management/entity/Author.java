@@ -9,14 +9,6 @@ public class Author extends BaseEntity {
     private int bookCount;
 
 
-    public Author(String name, int birthYear, List<Book> books, int id, int bookCount) {
-        super(id);
-        this.name = name;
-        this.birthYear = birthYear;
-        this.books = books;
-        this.bookCount = 0;
-    }
-
     public Author(int id, String name, int birthYear) {
         super(id);
         this.name = name;
@@ -24,7 +16,7 @@ public class Author extends BaseEntity {
     }
 
     public Author(String name, int birthYear) {
-        super(0);    // Assuming 0 as the default ID for a new author
+        super(0);    //  0 as default ID for a new author
         this.name = name;
         this.birthYear = birthYear;
     }
@@ -32,19 +24,15 @@ public class Author extends BaseEntity {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public int getBirthYear() {
         return birthYear;
     }
-
     public void setBirthYear(int birthYear) {
         this.birthYear = birthYear;
     }
-
     public int getId() {
         return id;
     }
@@ -54,7 +42,6 @@ public class Author extends BaseEntity {
     public int getBookCount(){
         return bookCount;
     }
-
     public void setBookCount(int bookCount) {
         this.bookCount = bookCount;
     }

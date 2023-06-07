@@ -22,38 +22,71 @@ public class TransactionDaoImpl implements TransactionDao {
     public void addTransaction(Transaction transaction) {
         try {
             String query = "INSERT INTO transactions (user_id, book_id, borrowing_date, return_date) VALUES (?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, transaction.getUserId());
-            statement.setInt(2, transaction.getBookId());
-            statement.setDate(3, Date.valueOf(transaction.getBorrowingDate()));
-            statement.setDate(4, Date.valueOf(transaction.getReturnDate()));
-            statement.executeUpdate();
-            System.out.println("Transaction added successfully.");
+            PreparedStatement sta = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            sta.setInt(1, transaction.getUserId());
+            sta.setInt(2, transaction.getBookId());
+            sta.setDate(3, Date.valueOf(transaction.getBorrowingDate()));
+            sta.setDate(4, Date.valueOf(transaction.getReturnDate()));
+            sta.executeUpdate();
+
+            ResultSet generatedKeys = sta.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int transactionId = generatedKeys.getInt(1);
+                transaction.setId(transactionId);
+                System.out.println("Transaction added successfully. Generated ID: " + transactionId);
+            } else {
+                System.out.println("Failed to add transaction.");
+            }
         } catch (SQLException e) {
             System.out.println("Failed to add transaction.");
             e.printStackTrace();
         }
     }
 
+    @Override
+    public Transaction getTransactionByUserAndBook(int userId, int bookId) {
+        return null;
+    }
 
     @Override
-    public List<Transaction> getAllTransactions() {
+    public Transaction getTransactionById(int transactionId) {
+        try {
+            String query = "SELECT * FROM transactions WHERE id = ?";
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setInt(1, transactionId);
+
+            ResultSet result = sta.executeQuery();
+            if (result.next()) {
+                int id = result.getInt("id");
+                int userId = result.getInt("user_id");
+                int bookId = result.getInt("book_id");
+                LocalDate borrowingDate = result.getDate("borrowing_date").toLocalDate();
+                LocalDate returnDate = result.getDate("return_date") != null
+                        ? result.getDate("return_date").toLocalDate() : null;
+
+                return new Transaction(id, userId, bookId, borrowingDate, returnDate);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions(UserDao userDao, BookDao bookDao) {
         List<Transaction> transactions = new ArrayList<>();
         try {
             String query = "SELECT * FROM transactions";
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                int transactionId = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
-                int bookId = resultSet.getInt("book_id");
-                Date borrowingDate = resultSet.getDate("borrowing_date");
-                Date returnDate = resultSet.getDate("return_date");
+            Statement sta = connection.createStatement();
+            ResultSet result = sta.executeQuery(query);
+            while (result.next()) {
+                int transactionId = result.getInt("id");
+                int userId = result.getInt("user_id");
+                int bookId = result.getInt("book_id");
+                Date borrowingDate = result.getDate("borrowing_date");
+                Date returnDate = result.getDate("return_date");
 
-                // Retrieve the corresponding user and book objects
-                UserDao userDao = new UserDaoImpl(connection);
                 User user = userDao.getUserById(userId);
-                BookDao bookDao = new BookDaoImpl(connection);
                 Book book = bookDao.getBookById(bookId);
 
                 Transaction transaction = new Transaction(transactionId, user, book, borrowingDate.toLocalDate(), returnDate.toLocalDate());
@@ -66,46 +99,18 @@ public class TransactionDaoImpl implements TransactionDao {
         return new ArrayList<>(transactions);
     }
 
-    @Override
-    public Transaction getTransactionByUserAndBook(int userId, int bookId) {
-        return null;
-    }
 
     @Override
-    public Transaction getTransactionById(int transactionId) {
-        try {
-            String query = "SELECT * FROM transactions WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, transactionId);
-
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int userId = resultSet.getInt("user_id");
-                int bookId = resultSet.getInt("book_id");
-                LocalDate borrowingDate = resultSet.getDate("borrowing_date").toLocalDate();
-                LocalDate returnDate = resultSet.getDate("return_date") != null
-                        ? resultSet.getDate("return_date").toLocalDate() : null;
-
-                return new Transaction(id, userId, bookId, borrowingDate, returnDate);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-        @Override
     public void updateTransaction(Transaction transaction) {
         try {
             String query = "UPDATE transactions SET user_id = ?, book_id = ?, borrowing_date = ?, return_date = ? WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, transaction.getUser().getId());
-            statement.setInt(2, transaction.getBook().getId());
-            statement.setDate(3, Date.valueOf(transaction.getBorrowingDate()));
-            statement.setDate(4, Date.valueOf(transaction.getReturnDate()));
-            statement.setInt(5, transaction.getId());
-            statement.executeUpdate();
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setInt(1, transaction.getUser().getId());
+            sta.setInt(2, transaction.getBook().getId());
+            sta.setDate(3, Date.valueOf(transaction.getBorrowingDate()));
+            sta.setDate(4, Date.valueOf(transaction.getReturnDate()));
+            sta.setInt(5, transaction.getId());
+            sta.executeUpdate();
             System.out.println("Transaction updated successfully.");
         } catch (SQLException e) {
             System.out.println("Failed to update transaction.");
@@ -113,21 +118,17 @@ public class TransactionDaoImpl implements TransactionDao {
         }
     }
 
-
     @Override
     public void removeTransaction(int transactionId) {
         try {
             String query = "DELETE FROM transactions WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, transactionId);
-            statement.executeUpdate();
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setInt(1, transactionId);
+            sta.executeUpdate();
             System.out.println("Transaction removed successfully.");
         } catch (SQLException e) {
             System.out.println("Failed to remove transaction.");
             e.printStackTrace();
         }
     }
-
-
-
 }

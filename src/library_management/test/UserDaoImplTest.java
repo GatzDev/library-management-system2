@@ -1,15 +1,13 @@
 package library_management.test;
+
 import library_management.dao.UserDao;
-import library_management.entity.Book;
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
 import org.junit.jupiter.api.Assertions;
-import library_management.dao.AuthorDao;
-import library_management.entity.Author;
-import library_management.impl.AuthorDaoImpl;
 import library_management.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.sql.*;
 import java.util.List;
 
@@ -25,7 +23,6 @@ public class UserDaoImplTest {
         // Set up the database connection
         connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
 
-        // Create an instance of the AuthorDao implementation
         userDao = new UserDaoImpl(connection);
     }
 

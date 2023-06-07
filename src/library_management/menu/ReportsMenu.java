@@ -1,4 +1,5 @@
 package library_management.menu;
+
 import library_management.dao.AuthorDao;
 import library_management.dao.BookDao;
 import library_management.dao.TransactionDao;
@@ -13,6 +14,7 @@ import library_management.impl.TransactionDaoImpl;
 import library_management.impl.UserDaoImpl;
 import library_management.util.Constants;
 import library_management.util.Input;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,7 +34,6 @@ public class ReportsMenu {
     public ReportsMenu() {
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-        // Create a database connection
         try {
 
             Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
@@ -45,9 +46,9 @@ public class ReportsMenu {
         } catch (SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
-
         }
     }
+
     public void generateReports() {
         System.out.println("Select the type of report to generate:");
         System.out.println("1. All Authors");
@@ -57,6 +58,7 @@ public class ReportsMenu {
         System.out.println("5. Most Prolific Authors");
         System.out.println("6. Most Popular Books");
         System.out.println("7. Most Active Users");
+        System.out.println("8. Return to Previous Menu");
         System.out.print("\nEnter your choice: ");
 
         int choice = Input.readIntInput(reader);
@@ -83,11 +85,12 @@ public class ReportsMenu {
             case 7:
                 mostActiveUsersReport();
                 break;
+            case 8:
+                return;
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
     }
-
 
     private void getAllAuthors() {
         List<Author> authors = authorDao.getAllAuthors();
@@ -142,7 +145,7 @@ public class ReportsMenu {
     }
 
     private void getAllTransactions() {
-        List<Transaction> transactions = transactionDao.getAllTransactions();
+        List<Transaction> transactions = transactionDao.getAllTransactions(userDao, bookDao);
 
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");

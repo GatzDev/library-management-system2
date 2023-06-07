@@ -1,10 +1,12 @@
 package library_management.menu;
+
 import library_management.dao.AuthorDao;
 import library_management.dao.BookDao;
 import library_management.entity.Author;
 import library_management.impl.AuthorDaoImpl;
 import library_management.util.Constants;
 import library_management.util.Input;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -13,11 +15,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class AuthorMenu {
-    private  BufferedReader reader;
+    private BufferedReader reader;
     private AuthorDao authorDao;
     private BookDao bookDao;
 
-    public  AuthorMenu(BookDao bookDao) {
+    public AuthorMenu(BookDao bookDao) {
         this.bookDao = bookDao;
 
         reader = new BufferedReader(new InputStreamReader(System.in));
@@ -31,16 +33,16 @@ public class AuthorMenu {
                 SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
-
         }
     }
 
-    public  void aMenu() {
+    public void aMenu() {
         System.out.println("--- Author Menu ---");
         System.out.println("1. Add Author");
         System.out.println("2. Update Author");
         System.out.println("3. Delete Author");
         System.out.println("4. Search Author");
+        System.out.println("5. Return to Previous Menu");
         System.out.print("Enter your choice: ");
 
         int choice = Input.readIntInput(reader);
@@ -58,6 +60,8 @@ public class AuthorMenu {
             case 4:
                 searchAuthor();
                 break;
+            case 5:
+                return; // Return to the previously displayed menu
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
@@ -95,7 +99,6 @@ public class AuthorMenu {
             existingAuthor.setName(updatedName);
         }
 
-
         System.out.println("Enter the new birth year of the author (or leave blank to keep the existing birth year):");
         int updatedBirthYear = Input.readIntInput(reader);
 
@@ -103,11 +106,9 @@ public class AuthorMenu {
             existingAuthor.setBirthYear(updatedBirthYear);
         }
 
-
         // Create a new Author object with the updated details
         Author updatedAuthor = new Author(updatedName, updatedBirthYear);
         updatedAuthor.setId(authorId);
-
 
         // Update the author in the database
         boolean updated = authorDao.updateAuthor(updatedAuthor);
@@ -117,7 +118,6 @@ public class AuthorMenu {
             System.out.println("Failed to update the author.");
         }
     }
-
 
     private void removeAuthor() {
         System.out.println("Enter the ID of the author to remove:");
@@ -131,9 +131,9 @@ public class AuthorMenu {
 
         boolean removed = authorDao.removeAuthor(authorId);
         if (removed) {
-            System.out.println("Author removed successfully.");
+            System.out.println("Author with ID " + authorId + " has been removed successfully.");
         } else {
-            System.out.println("Failed to remove the author.");
+            System.out.println("Failed to remove the author with ID : " + authorId);
         }
     }
 

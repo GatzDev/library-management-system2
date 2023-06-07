@@ -35,10 +35,6 @@ public class Book extends BaseEntity{
         this.title = title;
     }
 
-    public Book(int bookId, String title, int authorId) {
-        super(0);
-    }
-
 
     public int getTransactionCount() {
         return this.transactionCount;

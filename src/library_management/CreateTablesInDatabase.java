@@ -1,4 +1,5 @@
 package library_management;
+
 import library_management.util.Constants;
 
 import java.sql.Connection;
@@ -8,17 +9,14 @@ import java.sql.Statement;
 
 
 class CreateTableInDataBase {
-
-
-
     public static void main(String[] args) {
 
 
         try {
-            System.out.println(Constants .URL);
+            System.out.println(Constants.URL);
 
             System.out.println("Connecting to selected database ...");
-            Connection conn = DriverManager.getConnection(Constants .URL,Constants .USERNAME, Constants.PASSWORD);
+            Connection conn = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
             System.out.println("Connected to database successfully ...");
             System.out.println("Creating tables in selected database");
             createTables(conn);
@@ -72,13 +70,13 @@ class CreateTableInDataBase {
                 st.executeUpdate(createTransactionsTable);
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (st != null)
                     conn.close();
-            }catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -86,7 +84,7 @@ class CreateTableInDataBase {
             if (conn != null)
                 conn.close();
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

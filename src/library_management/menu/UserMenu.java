@@ -1,4 +1,5 @@
 package library_management.menu;
+
 import library_management.dao.UserDao;
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
@@ -21,8 +22,6 @@ public class UserMenu {
     public UserMenu() {
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-
-        // Create a database connection
         try {
             Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
             userDao = new UserDaoImpl(connection);
@@ -30,7 +29,6 @@ public class UserMenu {
                 SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
-
         }
     }
 
@@ -40,6 +38,7 @@ public class UserMenu {
         System.out.println("2. Update User");
         System.out.println("3. Remove User");
         System.out.println("4. Search User");
+        System.out.println("5. Return to Previous Menu");
         System.out.print("Enter your choice: ");
 
         int choice = readIntInput(reader);
@@ -57,6 +56,8 @@ public class UserMenu {
             case 4:
                 searchUsers();
                 break;
+            case 5:
+                return;
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
@@ -85,7 +86,7 @@ public class UserMenu {
             System.out.println("Enter the ID of the user to update:");
             int userId = Integer.parseInt(reader.readLine());
 
-            // Retrieve the existing user by ID
+            // TAke the existing user by ID
             User user = userDao.getUserById(userId);
 
             if (user == null) {
@@ -121,7 +122,6 @@ public class UserMenu {
             System.out.println("Enter the ID of the user to remove:");
             int userId = Integer.parseInt(reader.readLine());
 
-            // Retrieve the existing user by ID
             User user = userDao.getUserById(userId);
 
             if (user == null) {
