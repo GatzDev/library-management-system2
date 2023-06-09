@@ -72,12 +72,31 @@ public class BookMenu {
         }
     }
 
-    private void addBook() {
+    private Book addBook() {
         System.out.println("Enter the title of the book:");
         String title = Input.readStringInput(reader);
 
-        System.out.println("Enter the author_id of the book:");
-        int author_id = Input.readIntInput(reader);
+        List<Author> authors = authorDao.getAllAuthors();
+        System.out.println("List of Authors:");
+        for (Author author : authors) {
+            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
+        }
+
+        System.out.println("Enter the ID of the author:");
+        int authorId = Input.readIntInput(reader);
+
+        Author selectedAuthor = null;
+        for (Author author : authors) {
+            if (author.getId() == authorId) {
+                selectedAuthor = author;
+                break;
+            }
+        }
+
+        if (selectedAuthor == null) {
+            System.out.println("Invalid author ID.");
+            return null;
+        }
 
         System.out.println("Enter the publication year of the book:");
         int publicationYear = Input.readIntInput(reader);
@@ -85,26 +104,37 @@ public class BookMenu {
         System.out.println("Enter the ISBN of the book:");
         String isbn = Input.readStringInput(reader);
 
-        // Validate the ISBN
         if (!isbn.matches(Constants.ISBN_REGEX)) {
             System.out.println("Invalid ISBN format. Please enter a valid ISBN.");
-            return;
         }
 
-        Book book = new Book(title, author_id, publicationYear, isbn);
+        System.out.println("Enter the stock of the book:");
+        int stock = Input.readIntInput(reader);
 
-        if (bookDao.addBook(book)) {
+        Book book = new Book(title, selectedAuthor, publicationYear, isbn);
+        book.setStock(stock);
+
+        boolean added = bookDao.addBook(book);
+        if (added) {
             System.out.println("Book added successfully.");
+            return book;
         } else {
             System.out.println("Failed to add the book.");
+            return null;
         }
     }
 
+
     private void updateBook() {
+        List<Book> books = bookDao.getAllBooks();
+        System.out.println("List of Authors:");
+        for (Book book : books) {
+            System.out.println("ID: " + book.getId() + ", Name: " + book.getTitle());
+        }
+
         System.out.println("Enter the ID of the book to update:");
         int bookId = Input.readIntInput(reader);
 
-        // Take the book from the database using the bookId
         Book bookToUpdate = bookDao.getBookById(bookId);
         if (bookToUpdate == null) {
             System.out.println("Book not found.");
@@ -113,14 +143,30 @@ public class BookMenu {
 
         System.out.println("Enter the new title of the book (or leave blank to keep the existing title):");
         String newTitle = Input.readStringInput(reader);
-        if (!newTitle.isEmpty()) {
+        if (!newTitle.isBlank()) {
             bookToUpdate.setTitle(newTitle);
         }
 
-        System.out.println("Enter the new author_id of the book (or leave blank to keep the existing author):");
-        String newAuthor = Input.readStringInput(reader);
-        if (!newAuthor.isEmpty()) {
-            bookToUpdate.setAuthor(newAuthor);
+        List<Author> authors = authorDao.getAllAuthors();
+        System.out.println("List of Authors:");
+        for (Author author : authors) {
+            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
+        }
+
+        System.out.println("Enter the ID of the author:");
+        int authorId = Input.readIntInput(reader);
+
+        Author selectedAuthor = null;
+        for (Author author : authors) {
+            if (author.getId() == authorId) {
+                selectedAuthor = author;
+                break;
+            }
+        }
+
+        if (selectedAuthor == null) {
+            System.out.println("Invalid author ID.");
+            return;
         }
 
         System.out.println("Enter the new publication year of the book (or enter 0 to keep the existing year):");
@@ -140,7 +186,13 @@ public class BookMenu {
             bookToUpdate.setISBN(newISBN);
         }
 
-        // Call the updateBook method of the BookDao instance to update the book in the database
+        System.out.println("Enter the new stock of the book (or enter -1 to keep the existing stock):");
+        int newStock = Input.readIntInput(reader);
+        if (newStock != -1) {
+            bookToUpdate.setStock(newStock);
+        }
+
+        // Update the book in the database
         if (bookDao.updateBook(bookToUpdate)) {
             System.out.println("Book updated successfully.");
         } else {
@@ -165,18 +217,14 @@ public class BookMenu {
         String keyword = Input.readStringInput(reader);
 
         // Call the searchBooks() method of the BookDao instance to search for books
-        List<Book> books = bookDao.searchBooks(keyword);
+        List<Book> books = bookDao.searchBooks(keyword, authorDao);
 
         if (books.isEmpty()) {
             System.out.println("No books found matching the keyword.");
         } else {
             System.out.println("Books matching the keyword:");
             for (Book book : books) {
-                Author author = authorDao.getAuthorById(book.getAuthorId());
-
-                book.setAuthor(author.getName());
-
-                System.out.println(book.getTitle() + " by " + book.getAuthor());
+                System.out.println(book.getTitle() + " by " + book.getAuthor().getName());
             }
         }
     }
@@ -190,7 +238,10 @@ public class BookMenu {
             System.out.println("No books available.");
         } else {
             for (Book book : availableBooks) {
-                System.out.println(book.getTitle());
+                //System.out.println(book.getTitle());
+                //  System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle());
+                System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor().getName());
+
             }
         }
     }

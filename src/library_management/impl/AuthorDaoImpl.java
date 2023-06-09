@@ -7,13 +7,14 @@ import java.util.List;
 
 public class AuthorDaoImpl implements AuthorDao {
     private Connection connection;
+    private AuthorDao authorDao;
 
     public AuthorDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public void addAuthor(Author author) {
+    public Author addAuthor(Author author) {
         try {
             String query = "INSERT INTO authors (name, birth_year) VALUES (?, ?)";
             PreparedStatement sta = connection.prepareStatement(query);
@@ -21,10 +22,12 @@ public class AuthorDaoImpl implements AuthorDao {
             sta.setInt(2, author.getBirthYear());
             sta.executeUpdate();
             System.out.println("Author added successfully.");
+            return author;
         } catch (SQLException e) {
             System.out.println("Failed to add author.");
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -43,13 +46,43 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
+    public List<Author> getAllAuthorsWithId() {
+        List<Author> authors = new ArrayList<>();
+
+        try {
+            String query = "SELECT id, name, birth_year FROM authors";
+            PreparedStatement sta = connection.prepareStatement(query);
+            ResultSet rs = sta.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int birthYear = rs.getInt("birth_year");
+
+                Author author = new Author(name, birthYear);
+                author.setId(id);
+                authors.add(author);
+            }
+
+            rs.close();
+            sta.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return authors;
+    }
+
+
+
     @Override
     public boolean removeAuthor(int authorId) {
         String deleteAuthorQuery = "DELETE FROM authors WHERE id = ?";
 
         try (PreparedStatement sta = connection.prepareStatement(deleteAuthorQuery)) {
             sta.setInt(1, authorId);
-            return true;
+            int rowsDeleted = sta.executeUpdate();
+            return rowsDeleted > 0;
 
         } catch (SQLException e) {
             System.out.println("Error while deleting the author: " + e.getMessage());
@@ -57,27 +90,28 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    @Override
-    public List<Author> getAllAuthors() {
-        List<Author> authors = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM authors";
-            Statement sta = connection.createStatement();
-            ResultSet result = sta.executeQuery(query);
-            while (result.next()) {
-                Author author = new Author(
-                        result.getInt("id"),
-                        result.getString("name"),
-                        result.getInt("birth_year")
-                );
-                authors.add(author);
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve authors.");
-            e.printStackTrace();
+@Override
+public List<Author> getAllAuthors() {
+    List<Author> authors = new ArrayList<>();
+    try {
+        String query = "SELECT id, name, birth_year FROM authors";
+        Statement sta = connection.createStatement();
+        ResultSet result = sta.executeQuery(query);
+        while (result.next()) {
+            int id = result.getInt("id");
+            String name = result.getString("name");
+            int birthYear = result.getInt("birth_year");
+            Author author = new Author(name, birthYear);
+            author.setId(id);
+            authors.add(author);
         }
-        return authors;
+    } catch (SQLException e) {
+        System.out.println("Failed to retrieve authors.");
+        e.printStackTrace();
     }
+    return authors;
+}
+
 
     @Override
     public Author getAuthorById(int authorId) {
@@ -122,7 +156,8 @@ public class AuthorDaoImpl implements AuthorDao {
                 int authorId = result.getInt("id");
                 String authorName = result.getString("name");
                 int bookCount = result.getInt("book_count");
-                Author author = new Author(authorId, authorName, 0);
+                Author author = new Author( authorName, 0);
+                author.setId(authorId);
                 author.setBookCount(bookCount);
                 authors.add(author);
             }
@@ -148,7 +183,7 @@ public class AuthorDaoImpl implements AuthorDao {
                 String name = result.getString("name");
                 int birthYear = result.getInt("birth_year");
 
-                Author author = new Author(authorId, name, birthYear);
+                Author author = new Author(name, birthYear);
                 authors.add(author);
             }
 

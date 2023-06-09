@@ -1,10 +1,9 @@
 package library_management.entity;
 
 public abstract class BaseEntity {
-    protected int id;
+    private int id;
 
-    public BaseEntity(int id) {
-        this.id = id;
+    public BaseEntity() {
     }
 
     public int getId() {
@@ -14,4 +13,5 @@ public abstract class BaseEntity {
     public void setId(int id) {
         this.id = id;
     }
-}
+    }
+

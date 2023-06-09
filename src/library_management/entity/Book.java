@@ -5,36 +5,49 @@ import library_management.util.Constants;
 public class Book extends BaseEntity{
 
     private String title;
-    private String author;
-    private int author_id;
+    private Author author;
     private int publicationYear;
     private String ISBN;
-    private int stock = 1;
+    private int stock;
     private int transactionCount = 0;
 
 
-    public Book(int id, String title, int author_id, int publicationYear, String ISBN, int stock) {
-        super(id);
+    public Book( String title, Author author, int publicationYear, String ISBN, int stock) {
         this.title = title;
-        this.author_id = author_id;
+        this.author = author;
         this.publicationYear = publicationYear;
         this.ISBN = ISBN;
         this.stock = stock;
     }
 
-    public Book(String title, int author_id, int publicationYear, String ISBN) {
-        super(0);
+    public Book(String title, Author author, int publicationYear, String ISBN) {
         this.title = title;
-        this.author_id = author_id;
+        this.author = author;
         this.publicationYear = publicationYear;
         this.ISBN = ISBN;
     }
 
-    public Book(int id, String title) {
-        super(id);
+    public Book( String title) {
         this.title = title;
     }
 
+    public Book(int id, String title, Author author, int publicationYear, String ISBN) {
+        setId(id);
+        this.title = title;
+        this.author = author;
+        this.publicationYear = publicationYear;
+        this.ISBN = ISBN;
+    }
+
+    public Book(int id, String title, Author author, int publicationYear, String ISBN, int stock) {
+        setId(id);
+        this.title = title;
+        this.author = author;
+        this.publicationYear = publicationYear;
+        this.ISBN = ISBN;
+        this.stock = stock;
+
+    }
 
     public int getTransactionCount() {
         return this.transactionCount;
@@ -42,14 +55,6 @@ public class Book extends BaseEntity{
 
     public void setTransactionCount(int transactionCount) {
         this.transactionCount = transactionCount;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -60,17 +65,15 @@ public class Book extends BaseEntity{
         this.title = title;
     }
 
-    public String getAuthor() {
+
+    public Author getAuthor() {
         return author;
     }
 
-    public int getAuthorId() {
-        return author_id;
-    }
-
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
+
 
     public int getPublicationYear() {
         return publicationYear;
@@ -103,9 +106,9 @@ public class Book extends BaseEntity{
 
     @Override
     public String toString() {
-        return "Book ID: " + id +
+        return "Book ID: " + this.getId() +
                 ", Title: " + title +
-                ", Author ID: " + author_id +
+                ", Author ID: " + author.getId() +
                 ", Publication Year: " + publicationYear +
                 ", ISBN: " + ISBN +
                 ", Stock: " + stock;
@@ -120,14 +123,12 @@ public class Book extends BaseEntity{
             return false;
         }
         Book other = (Book) obj;
-        return id == other.id &&
+        return  this.getId() == other.getId() &&
                 title.equals(other.title) &&
-                author_id == other.author_id &&
+                author == other.author &&
                 publicationYear == other.publicationYear &&
                 ISBN.equals(other.ISBN) &&
                 stock == other.stock;
     }
-
-
 }
 

@@ -20,7 +20,7 @@ public class AuthorMenu {
     private BookDao bookDao;
 
     public AuthorMenu(BookDao bookDao) {
-        this.bookDao = bookDao;
+      //  this.bookDao = bookDao;
 
         reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -74,7 +74,6 @@ public class AuthorMenu {
         System.out.println("Enter the birth year of the author:");
         int birthYear = Input.readIntInput(reader);
 
-        // Create a new Author object with the user-provided details
         Author author = new Author(name, birthYear);
 
         // Call the addAuthor method of the AuthorDao instance to add the author to the database
@@ -82,11 +81,25 @@ public class AuthorMenu {
     }
 
     private void updateAuthor() {
+        List<Author> authors = authorDao.getAllAuthorsWithId();
+
+        System.out.println("List of Authors:");
+        for (Author author : authors) {
+            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
+        }
+
         System.out.println("Enter the ID of the author to update:");
         int authorId = Input.readIntInput(reader);
 
-        // Check if the author exists
-        Author existingAuthor = authorDao.getAuthorById(authorId);
+
+        Author existingAuthor = null;
+        for (Author author : authors) {
+            if (author.getId() == authorId) {
+                existingAuthor = author;
+                break;
+            }
+        }
+
         if (existingAuthor == null) {
             System.out.println("Author not found.");
             return;
@@ -106,12 +119,8 @@ public class AuthorMenu {
             existingAuthor.setBirthYear(updatedBirthYear);
         }
 
-        // Create a new Author object with the updated details
-        Author updatedAuthor = new Author(updatedName, updatedBirthYear);
-        updatedAuthor.setId(authorId);
-
         // Update the author in the database
-        boolean updated = authorDao.updateAuthor(updatedAuthor);
+        boolean updated = authorDao.updateAuthor(existingAuthor);
         if (updated) {
             System.out.println("Author updated successfully.");
         } else {
@@ -120,20 +129,35 @@ public class AuthorMenu {
     }
 
     private void removeAuthor() {
-        System.out.println("Enter the ID of the author to remove:");
+        List<Author> authors = authorDao.getAllAuthorsWithId();
+
+        System.out.println("List of Authors:");
+        for (Author author : authors) {
+            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
+        }
+
+        System.out.println("Enter the ID of the author to Remove:");
         int authorId = Input.readIntInput(reader);
 
-        Author author = authorDao.getAuthorById(authorId);
-        if (author == null) {
-            System.out.println("Author with ID " + authorId + " does not exist.");
+
+        Author existingAuthor = null;
+        for (Author author : authors) {
+            if (author.getId() == authorId) {
+                existingAuthor = author;
+                break;
+            }
+        }
+
+        if (existingAuthor == null) {
+            System.out.println("Author not found.");
             return;
         }
 
         boolean removed = authorDao.removeAuthor(authorId);
         if (removed) {
-            System.out.println("Author with ID " + authorId + " has been removed successfully.");
+            System.out.println("Author with ID: " + authorId + " has been removed successfully.");
         } else {
-            System.out.println("Failed to remove the author with ID : " + authorId);
+            System.out.println("Failed to remove the author with ID: " + authorId);
         }
     }
 
@@ -141,7 +165,6 @@ public class AuthorMenu {
         System.out.println("Enter a keyword to search for authors:");
         String keyword = Input.readStringInput(reader);
 
-        // Call the searchAuthor() method of the AuthorDao instance to search for authors
         List<Author> authors = authorDao.searchAuthor(keyword);
 
         if (authors.isEmpty()) {
@@ -149,8 +172,8 @@ public class AuthorMenu {
         } else {
             System.out.println("Authors matching the keyword:");
             for (Author author : authors) {
-                int books = bookDao.getBooksByAuthorId(author.getId());
-                System.out.println(author.getName() + " (" + books + " books)");
+               // int books = bookDao.getBooksByAuthorId(author.getId());
+                System.out.println(author.getName() + " (" + author.getBookCount() + " books)");
             }
         }
     }

@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static library_management.util.Input.readIntInput;
 
@@ -104,6 +105,13 @@ public class TerminalInterface {
     }
 
     private void borrowBook() {
+        List<User> users = userDao.getAllUsers();
+
+        System.out.println("List of Users:");
+        for (User user : users) {
+            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+        }
+
         try {
             System.out.println("Enter the ID of the user:");
             int userId = Integer.parseInt(reader.readLine());
@@ -113,6 +121,12 @@ public class TerminalInterface {
             if (user == null) {
                 System.out.println("User not found.");
                 return;
+            }
+
+            List<Book> books = bookDao.getAllBooks();
+            System.out.println("List of Authors:");
+            for (Book book : books) {
+                System.out.println("ID: " + book.getId() + ", Name: " + book.getTitle() + ", Stock:" + book.getStock() );
             }
 
             System.out.println("Enter the ID of the book to borrow:");
@@ -126,27 +140,36 @@ public class TerminalInterface {
             }
 
             // Check the book is already borrowed
-            if (book.getStock() == 0) {
+            if (book.getStock() <= 0) {
                 System.out.println("The book is not available for borrowing.");
                 return;
             }
 
             LocalDate borrowingDate = LocalDate.now();
-            LocalDate returnDate = borrowingDate.plusDays(29);
-            Transaction transaction = new Transaction(userId, bookId, borrowingDate, returnDate);
+           // LocalDate returnDate = null;
+
+            Transaction transaction = new Transaction(user, book, borrowingDate, null);  // Pass the 'user' object here
             transactionDao.addTransaction(transaction);
 
-            book.setStock(0);
+            book.setStock(book.getStock() - 1);
             bookDao.updateBook(book);
 
             System.out.println("Book borrowed successfully!");
         } catch (IOException e) {
-            System.out.println("Failed to read user input.");
+            System.out.println("Failed to borrow.");
             e.printStackTrace();
         }
     }
 
+
     private void returnBook() {
+        List<User> users = userDao.getAllUsers();
+
+        System.out.println("List of Users:");
+        for (User user : users) {
+            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+        }
+
         try {
             System.out.println("Enter the ID of the user:");
             int userId = Integer.parseInt(reader.readLine());
@@ -156,6 +179,18 @@ public class TerminalInterface {
             if (user == null) {
                 System.out.println("User not found.");
                 return;
+            }
+
+            List<Book> borrowedBooks = transactionDao.getBorrowedBooksByUser(user.getId());
+
+            if (borrowedBooks.isEmpty()) {
+                System.out.println("No borrowed books found for this user.");
+                return;
+            }
+
+            System.out.println("List of Borrowed Books:");
+            for (Book book : borrowedBooks) {
+                System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle());
             }
 
             System.out.println("Enter the ID of the book to return:");
@@ -168,7 +203,7 @@ public class TerminalInterface {
                 return;
             }
 
-            // Check  the book is borrowed by the user
+            // Check if the book is borrowed by the user
             Transaction transaction = transactionDao.getTransactionByUserAndBook(user.getId(), book.getId());
 
             if (transaction == null) {
@@ -179,15 +214,17 @@ public class TerminalInterface {
             transaction.setReturnDate(LocalDate.now());
             transactionDao.updateTransaction(transaction);
 
-            book.setStock(1);
+            book.setStock(book.getStock() + 1);
             bookDao.updateBook(book);
 
             System.out.println("Book returned successfully!");
         } catch (IOException e) {
-            System.out.println("Failed to read user input.");
+            System.out.println("Failed to read user input. Please try again.");
             e.printStackTrace();
         }
     }
+
+
 
     private void exit() {
         System.out.println("Exiting the application...");

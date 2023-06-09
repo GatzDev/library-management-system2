@@ -4,6 +4,7 @@ import library_management.dao.UserDao;
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
 import library_management.util.Constants;
+import library_management.util.Input;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +13,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
 
+import static library_management.util.Constants.EMAIL_PATTERN;
 import static library_management.util.Input.readIntInput;
 
 public class UserMenu {
@@ -68,20 +71,36 @@ public class UserMenu {
             System.out.println("Enter the name of the user:");
             String name = reader.readLine();
 
-            System.out.println("Enter the email of the user:");
-            String email = reader.readLine();
+            String email;
+            boolean validEmail = false;
 
-            User user = new User(name, email);
+            while (!validEmail) {
+                System.out.println("Enter the email of the user:");
+                email = reader.readLine();
 
-            userDao.addUser(user);
-            System.out.println("User added successfully!");
+                Matcher matcher = EMAIL_PATTERN.matcher(email);
+                if (matcher.matches()) {
+                    validEmail = true;
+                    User user = new User(name, email);
+                    userDao.addUser(user);
+                    System.out.println("User added successfully!");
+                } else {
+                    System.out.println("Invalid email format. Please enter a valid email.");
+                }
+            }
         } catch (IOException e) {
-            System.out.println("Failed to read user input.");
             e.printStackTrace();
         }
     }
 
     private void updateUser() {
+        List<User> users = userDao.getAllUsers();
+
+        System.out.println("List of Users:");
+        for (User user : users) {
+            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+        }
+
         try {
             System.out.println("Enter the ID of the user to update:");
             int userId = Integer.parseInt(reader.readLine());
@@ -109,33 +128,38 @@ public class UserMenu {
             }
 
             userDao.updateUser(user);
-            System.out.println("User updated successfully!");
-        } catch (
-                IOException e) {
-            System.out.println("Failed to read user input.");
-            e.printStackTrace();
-        }
-    }
-
-    private void removeUser() {
-        try {
-            System.out.println("Enter the ID of the user to remove:");
-            int userId = Integer.parseInt(reader.readLine());
-
-            User user = userDao.getUserById(userId);
-
-            if (user == null) {
-                System.out.println("User not found.");
-                return;
-            }
-
-            userDao.deleteUser(userId);
-            System.out.println("User removed successfully!");
+            System.out.println("User with ID: " + userId + " has been update successfully.");
         } catch (IOException e) {
-            System.out.println("Failed to read user input.");
+            System.out.println("Failed to update the user");
             e.printStackTrace();
         }
     }
+
+private void removeUser() {
+    List<User> users = userDao.getAllUsers();
+
+    System.out.println("List of Users:");
+    for (User user : users) {
+        System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+    }
+
+    System.out.println("Enter the ID of the user to remove:");
+    int userId = Input.readIntInput(reader);
+
+    User user = userDao.getUserById(userId);
+
+    if (user == null) {
+        System.out.println("User not found.");
+        return;
+    }
+
+    boolean removed = userDao.deleteUser(userId);
+    if (removed) {
+        System.out.println("User with ID: " + userId + " has been removed successfully.");
+    } else {
+        System.out.println("Failed to remove the user with ID: " + userId);
+    }
+}
 
     private void searchUsers() {
         try {

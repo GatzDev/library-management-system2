@@ -47,9 +47,8 @@ public class UserDaoImpl implements UserDao {
             String query = "DELETE FROM users WHERE id = ?";
             PreparedStatement sta = connection.prepareStatement(query);
             sta.setInt(1, userId);
-            sta.executeUpdate();
-            return true;
-
+            int rowsDeleted = sta.executeUpdate();
+            return rowsDeleted > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -68,8 +67,8 @@ public class UserDaoImpl implements UserDao {
                 int id = result.getInt("id");
                 String name = result.getString("name");
                 String email = result.getString("email");
-
-                User user = new User(id, name, email);
+                User user = new User(name, email);
+                user.setId(id);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -93,7 +92,7 @@ public class UserDaoImpl implements UserDao {
                 String name = result.getString("name");
                 String email = result.getString("email");
 
-                User user = new User(id, name, email);
+                User user = new User(name, email);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -116,7 +115,10 @@ public class UserDaoImpl implements UserDao {
                 String name = result.getString("name");
                 String email = result.getString("email");
 
-                return new User(id, name, email);
+                final User user = new User(name, email);
+                user.setId(id);
+
+                return user;
             } else {
                 System.out.println("User not found with ID: " + userId);
                 return null;
@@ -145,8 +147,9 @@ public class UserDaoImpl implements UserDao {
                 int userId = result.getInt("id");
                 String userName = result.getString("name");
                 int transactionCount = result.getInt("transaction_count");
-                User user = new User(userId, userName);
+                User user = new User(userName);
                 user.setTransactionCount(transactionCount);
+                user.setId(userId);
                 activeUsers.add(user);
             }
         } catch (SQLException e) {

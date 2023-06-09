@@ -50,7 +50,7 @@ public class ReportsMenu {
     }
 
     public void generateReports() {
-        System.out.println("Select the type of report to generate:");
+        System.out.println("--- Reports Menu ---");
         System.out.println("1. All Authors");
         System.out.println("2. All Books");
         System.out.println("3. All Users");
@@ -107,26 +107,22 @@ public class ReportsMenu {
         }
     }
 
-    private void getAllBooks() {
-        List<Book> books = bookDao.getAllBooks();
-        if (books.isEmpty()) {
-            System.out.println("No books found.");
-        } else {
-            System.out.println("\nAll Books:");
-            for (Book book : books) {
-                System.out.println("ID: " + book.getId());
-                System.out.println("Title: " + book.getTitle());
-                //????   Retrieve the author for the book using the author ID
-                Author author = authorDao.getAuthorById(book.getAuthorId());
-                //????   Set the author name for the book
-                book.setAuthor(author.getName());
-                System.out.println("Author: " + book.getAuthor());
-                System.out.println("Publication Year: " + book.getPublicationYear());
-                System.out.println("ISBN: " + book.getISBN());
-                System.out.println();
-            }
+private void getAllBooks() {
+    List<Book> books = bookDao.getAllBooks();
+    if (books.isEmpty()) {
+        System.out.println("No books found.");
+    } else {
+        System.out.println("\nAll Books:");
+        for (Book book : books) {
+            System.out.println("ID: " + book.getId());
+            System.out.println("Title: " + book.getTitle());
+            System.out.println("Author: " + book.getAuthor().getName());
+            System.out.println("Publication Year: " + book.getPublicationYear());
+            System.out.println("ISBN: " + book.getISBN());
+            System.out.println();
         }
     }
+}
 
     private void getAllUsers() {
         List<User> users = userDao.getAllUsers();
@@ -145,21 +141,23 @@ public class ReportsMenu {
     }
 
     private void getAllTransactions() {
-        List<Transaction> transactions = transactionDao.getAllTransactions(userDao, bookDao);
+        List<Transaction> transactions = transactionDao.getAllTransactions();
 
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
         } else {
             System.out.println("Transactions:");
             for (Transaction transaction : transactions) {
-                System.out.println("ID: " + transaction.getId());
                 System.out.println("User ID: " + transaction.getUser().getId());
+                System.out.println("User Name: " + transaction.getUser().getName());
                 System.out.println("Book ID: " + transaction.getBook().getId());
+                System.out.println("Book Name: " + transaction.getBook().getTitle());
                 System.out.println("Return Date: " + transaction.getReturnDate());
                 System.out.println();
             }
         }
     }
+
 
     private void getMostProlificAuthors() {
         System.out.println("Enter the limit for the number of authors:");

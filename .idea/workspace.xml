@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My before last commit">
+    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My  last commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/dao/AuthorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/AuthorDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/dao/BookDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/BookDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/dao/TransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/TransactionDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Author.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/entity/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/BaseEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Book.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/User.java" afterDir="false" />
@@ -19,12 +22,9 @@
       <change beforePath="$PROJECT_DIR$/src/library_management/menu/BookMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/BookMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/menu/ReportsMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/ReportsMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/menu/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/UserMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/AuthorDaoImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/AuthorDaoImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/test/BookDaoImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/BookDaoImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/test/TransactionDaoImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/TransactionDaoImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/UserDaoImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/UserDaoImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/util/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/FileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/util/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,9 +159,9 @@
       <list>
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.TransactionDaoImplTest.testGetAllTransactions" />
+        <item itemvalue="JUnit.TransactionDaoImplTest.testAddTransaction" />
         <item itemvalue="JUnit.TransactionDaoImplTest" />
         <item itemvalue="JUnit.TransactionDaoImplTest.testGetTransactionById" />
-        <item itemvalue="JUnit.TransactionDaoImplTest.testAddTransaction" />
       </list>
     </recent_temporary>
   </component>
@@ -202,7 +202,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686081128138</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="My  last commit">
+      <created>1686126424773</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1686126424773</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -220,7 +227,8 @@
     <MESSAGE value="My first commit" />
     <MESSAGE value="My second commit" />
     <MESSAGE value="My before last commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="My before last commit" />
+    <MESSAGE value="My  last commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="My  last commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -231,5 +239,10 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/library_management_system$Main.ic" NAME="Main Coverage Results" MODIFIED="1686212269655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>library_management.*</FILTER>
+    </SUITE>
   </component>
 </project>

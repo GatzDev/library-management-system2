@@ -2,31 +2,19 @@ package library_management;
 
 import library_management.util.Constants;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 
 class CreateTableInDataBase {
-    public static void main(String[] args) {
 
-
-        try {
-            System.out.println(Constants.URL);
-
-            System.out.println("Connecting to selected database ...");
-            Connection conn = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
-            System.out.println("Connected to database successfully ...");
-            System.out.println("Creating tables in selected database");
-            createTables(conn);
+    public static void createTables(Connection conn) throws SQLException {
+        if (tablesExist(conn)) {
+            System.out.println("Tables already exist in the database.");
+            return;
+        }else {
             System.out.println("Tables created successfully!");
-        } catch (SQLException e) {
-            System.err.println("Error connecting to the database: " + e.getMessage());
         }
-    }
 
-    private static void createTables(Connection conn) throws SQLException {
         Statement st = null;
 
         String createBooksTable = "CREATE TABLE IF NOT EXISTS books (" +
@@ -63,30 +51,27 @@ class CreateTableInDataBase {
 
         try {
             st = conn.createStatement();
-            {
-                st.executeUpdate(createAuthorsTable);
-                st.executeUpdate(createBooksTable);
-                st.executeUpdate(createUsersTable);
-                st.executeUpdate(createTransactionsTable);
-            }
-
+            st.executeUpdate(createAuthorsTable);
+            st.executeUpdate(createBooksTable);
+            st.executeUpdate(createUsersTable);
+            st.executeUpdate(createTransactionsTable);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
                 if (st != null)
-                    conn.close();
+                    st.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        try {
-            if (conn != null)
-                conn.close();
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        private static boolean tablesExist (Connection conn) throws SQLException {
+            DatabaseMetaData metadata = conn.getMetaData();
+            ResultSet rs = metadata.getTables(null, null, null, new String[]{"TABLE"});
+            return rs.next();
         }
     }
-}
+
 

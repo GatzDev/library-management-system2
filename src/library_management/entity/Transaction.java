@@ -3,17 +3,14 @@ package library_management.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Transaction extends BaseEntity{
-    private int userId;
-    private int bookId;
+public class Transaction extends BaseEntity {
     private User user;
     private Book book;
     private LocalDate borrowingDate;
     private LocalDate returnDate;
 
 
-    public Transaction(int id, User user, Book book, LocalDate borrowingDate, LocalDate returnDate) {
-        super(id);
+    public Transaction(User user, Book book, LocalDate borrowingDate, LocalDate returnDate) {
         this.user = user;
         this.book = book;
         this.borrowingDate = borrowingDate;
@@ -21,32 +18,17 @@ public class Transaction extends BaseEntity{
     }
 
 
-    public Transaction(int id, int userId, int bookId, LocalDate borrowingDate, LocalDate returnDate) {
-        super(id);
-        this.userId = userId;
-        this.bookId = bookId;
+    public Transaction( LocalDate borrowingDate, LocalDate returnDate) {
         this.borrowingDate = borrowingDate;
         this.returnDate = returnDate;
     }
 
-    public Transaction( int userId, int bookId, LocalDate borrowingDate, LocalDate returnDate) {
-        super(0);
-        this.userId = userId;
-        this.bookId = bookId;
+    public Transaction(int transactionId, User user, Book book, LocalDate borrowingDate, LocalDate returnDate) {
+        setId(transactionId);
+        this.user = user;
+        this.book = book;
         this.borrowingDate = borrowingDate;
         this.returnDate = returnDate;
-    }
-
-    public int getUserId() {
-        return this.userId;
-    }
-
-    public int getBookId() {
-        return this.bookId;
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     public User getUser() {
@@ -77,36 +59,18 @@ public class Transaction extends BaseEntity{
         this.returnDate = returnDate;
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", bookId=" + bookId +
-                ", borrowingDate=" + borrowingDate +
-                ", returnDate=" + returnDate +
-                '}';
-    }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Transaction other = (Transaction) obj;
-        return id == other.id &&
-                userId == other.userId &&
-                bookId == other.bookId &&
-                Objects.equals(borrowingDate, other.borrowingDate) &&
-                Objects.equals(returnDate, other.returnDate);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return user.equals(that.user) && book.equals(that.book) && Objects.equals(borrowingDate, that.borrowingDate) && Objects.equals(returnDate, that.returnDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, bookId, borrowingDate, returnDate);
+        return Objects.hash(user, book, borrowingDate, returnDate);
     }
 }
 

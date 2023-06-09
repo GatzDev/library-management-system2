@@ -11,27 +11,18 @@ public class User extends BaseEntity{
     private int transactionCount = 0;
 
 
-    public User(int id, String name, String email, List<Book> borrowedBooks) {
-        super(id);
+    public User( String name, String email, List<Book> borrowedBooks) {
         this.name = name;
         this.email = email;
         this.borrowedBooks = borrowedBooks;
     }
 
-    public User(String name, String email) {
-        super(0);
+    public User( String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    public User(int id, String name, String email) {
-        super(id);
-        this.name = name;
-        this.email = email;
-    }
-
-    public User(int id, String name) {
-        super(id);
+    public User( String name) {
         this.name = name;
     }
 
@@ -40,12 +31,6 @@ public class User extends BaseEntity{
     }
     public void setTransactionCount(int transactionCount) {
         this.transactionCount = transactionCount;
-    }
-    public int getId() {
-        return this.id;
-    }
-    public void setId(int id) {
-        this.id = id;
     }
     public String getName() {
         return this.name;

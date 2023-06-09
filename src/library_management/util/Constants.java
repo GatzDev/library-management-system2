@@ -7,7 +7,9 @@ public class Constants {
     public static final String USERNAME = "root";
     public static final String PASSWORD = "L31mz40123!";
     public static final String ISBN_REGEX = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$";
+    public static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     public static final Pattern ISBN_PATTERN = Pattern.compile(ISBN_REGEX);
+    public static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     private Constants() {
         // Private constructor to prevent instantiation of the class

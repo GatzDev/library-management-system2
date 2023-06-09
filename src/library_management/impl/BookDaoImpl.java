@@ -1,15 +1,20 @@
 package library_management.impl;
+import library_management.dao.AuthorDao;
+import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.dao.BookDao;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookDaoImpl implements BookDao {
-    private Connection connection;
+    private final Connection connection;
+    private AuthorDao authorDao;
 
     public BookDaoImpl(Connection connection) {
         this.connection = connection;
+        this.authorDao = new AuthorDaoImpl(connection);
     }
 
     @Override
@@ -19,7 +24,7 @@ public class BookDaoImpl implements BookDao {
                     "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement sta = connection.prepareStatement(query);
             sta.setString(1, book.getTitle());
-            sta.setInt(2, book.getAuthorId());
+            sta.setInt(2, book.getAuthor().getId());
             sta.setInt(3, book.getPublicationYear());
             sta.setString(4, book.getISBN());
             sta.setInt(5, book.getStock());
@@ -38,7 +43,7 @@ public class BookDaoImpl implements BookDao {
                     "isbn = ?, stock = ? WHERE id = ?";
             PreparedStatement sta = connection.prepareStatement(query);
             sta.setString(1, book.getTitle());
-            sta.setInt(2, book.getAuthorId());
+            sta.setInt(2, book.getAuthor().getId());
             sta.setInt(3, book.getPublicationYear());
             sta.setString(4, book.getISBN());
             sta.setInt(5, book.getStock());
@@ -74,7 +79,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> searchBooks(String keyword) {
+    public List<Book> searchBooks(String keyword, AuthorDao authorDao) {
         List<Book> books = new ArrayList<>();
         try {
             String query = "SELECT * FROM books WHERE title LIKE ? OR author_id IN (SELECT id FROM authors WHERE name LIKE ?) OR isbn LIKE ?";
@@ -84,10 +89,12 @@ public class BookDaoImpl implements BookDao {
             sta.setString(3, "%" + keyword + "%");
             ResultSet result = sta.executeQuery();
             while (result.next()) {
+                int authorId = result.getInt("author_id");
+                Author author = authorDao.getAuthorById(authorId);
+
                 Book book = new Book(
-                        result.getInt("id"),
                         result.getString("title"),
-                        result.getInt("author_id"),
+                        author,
                         result.getInt("publication_year"),
                         result.getString("isbn"),
                         result.getInt("stock")
@@ -105,18 +112,24 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
         try {
-            String query = "SELECT * FROM books";
+            String query = "SELECT books.id, books.title, books.author_id, books.publication_year, books.isbn, books.stock, " +
+                    "authors.name, authors.birth_year " +
+                    "FROM books " +
+                    "JOIN authors ON books.author_id = authors.id";
             Statement sta = connection.createStatement();
             ResultSet result = sta.executeQuery(query);
             while (result.next()) {
-                Book book = new Book(
-                        result.getInt("id"),
-                        result.getString("title"),
-                        result.getInt("author_id"),
-                        result.getInt("publication_year"),
-                        result.getString("isbn"),
-                        result.getInt("stock")
-                );
+                int bookId = result.getInt("id");
+                String title = result.getString("title");
+                int publicationYear = result.getInt("publication_year");
+                String isbn = result.getString("isbn");
+                int stock = result.getInt("stock");
+                String authorName = result.getString("name");
+                int authorBirthYear = result.getInt("birth_year");
+
+                Author author = new Author(authorName, authorBirthYear);
+                Book book = new Book(title, author, publicationYear, isbn, stock);
+                book.setId(bookId);
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -126,24 +139,36 @@ public class BookDaoImpl implements BookDao {
         return books;
     }
 
-    @Override
-    public Book getBookById(int bookId) {
+@Override
+public Book getBookById(int bookId) {
+    Book book = null;
+    try {
         String query = "SELECT * FROM books WHERE id = ?";
-        try (PreparedStatement sta = connection.prepareStatement(query)) {
-            sta.setInt(1, bookId);
-            ResultSet result = sta.executeQuery();
-            if (result.next()) {
-                return extractBookFromResultSet(result);
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to retrieve the book by ID." + bookId + ". Error: " + e.getMessage());
-            e.printStackTrace();
+        PreparedStatement sta = connection.prepareStatement(query);
+        sta.setInt(1, bookId);
+        ResultSet result = sta.executeQuery();
+        if (result.next()) {
+            int id = result.getInt("id");
+            String title = result.getString("title");
+            int authorId = result.getInt("author_id");
+            int publicationYear = result.getInt("publication_year");
+            String isbn = result.getString("isbn");
+            int stock = result.getInt("stock");
+
+            Author author = authorDao.getAuthorById(authorId);
+            book = new Book(id,title,author, publicationYear, isbn, stock);
         }
-        return null;
+    } catch (SQLException e) {
+        System.out.println("Failed to retrieve the book by ID." + bookId);
+        e.printStackTrace();
     }
+    return book;
+}
+
 
     @Override
     public List<Book> getAvailableBooks() {
+
         List<Book> availableBooks = new ArrayList<>();
 
         try {
@@ -159,7 +184,9 @@ public class BookDaoImpl implements BookDao {
                 String isbn = result.getString("isbn");
                 int stock = result.getInt("stock");
 
-                Book book = new Book(id, title, authorId, publicationYear, isbn, stock);
+                Author author = authorDao.getAuthorById(authorId);
+
+                Book book = new Book(id, title, author, publicationYear, isbn, stock);
                 availableBooks.add(book);
             }
 
@@ -169,16 +196,6 @@ public class BookDaoImpl implements BookDao {
             e.printStackTrace();
         }
         return availableBooks;
-    }
-
-    private Book extractBookFromResultSet(ResultSet result) throws SQLException {
-        int id = result.getInt("id");
-        String title = result.getString("title");
-        int authorId = result.getInt("author_id");
-        int publicationYear = result.getInt("publication_year");
-        String isbn = result.getString("isbn");
-        int stock = result.getInt("stock");
-        return new Book(id, title, authorId, publicationYear, isbn, stock);
     }
 
     @Override
@@ -198,7 +215,9 @@ public class BookDaoImpl implements BookDao {
                 int bookId = result.getInt("id");
                 String bookTitle = result.getString("title");
                 int transactionCount = result.getInt("transaction_count");
-                Book book = new Book(bookId, bookTitle);
+                Book book = new Book( bookTitle);
+                book.setId(bookId);
+
                 book.setTransactionCount(transactionCount);
                 popularBooks.add(book);
             }
@@ -230,6 +249,10 @@ public class BookDaoImpl implements BookDao {
         }
 
         return bookCount;
+    }
+
+    public void setAuthorDao(AuthorDao authorDao) {
+        this.authorDao = authorDao;
     }
 }
 
