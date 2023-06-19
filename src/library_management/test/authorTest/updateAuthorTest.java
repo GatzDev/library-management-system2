@@ -74,7 +74,6 @@ public class updateAuthorTest {
         // Update the author in the database
         boolean updated = authorDao.updateAuthor(author);
 
-        // Assert that the update failed
         assertFalse(updated);
     }
 
@@ -83,7 +82,6 @@ public class updateAuthorTest {
         // Update a null author
         boolean updated = authorDao.updateAuthor(null);
 
-        // Assert that the update failed
         assertFalse(updated);
 
     }

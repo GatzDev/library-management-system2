@@ -2,7 +2,6 @@ package library_management.test.userTest;
 
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +27,6 @@ public class updateUserTest {
 
     @AfterEach
     public void cleanup() {
-        // Close the connection to the database
         try {
             DatabaseManagerTest.getConnection().close();
         } catch (SQLException e) {
@@ -37,11 +35,9 @@ public class updateUserTest {
     }
 
     @Test
-    public void testUpdateUser_ExistingUser_Success() {
-        // Create a mock user with an existing ID
-        User user = new User( "John Doe", "john@example.com");
+    public void existingUser() {
+        User user = new User( "Johny Bravo", "Bravo99@gmail.com.com");
 
-        // Call the updateUser method
         boolean result = userDao.updateUser(user);
 
         // Perform assertions to verify the user has been updated successfully
@@ -49,10 +45,9 @@ public class updateUserTest {
     }
 
     @Test
-    public void testUpdateUser_Success() {
-        // Create a mock User object
-        User user = new User("John", "john@example.com");
-        user.setId(1); // Set the ID of the user
+    public void updateUser() {
+        User user = new User("Bob", "bobcho@abv.com");
+        user.setId(1);
 
         // Perform the update operation
         boolean result = userDao.updateUser(user);
@@ -62,7 +57,7 @@ public class updateUserTest {
     }
 
     @Test
-    public void testUpdateUser_NullUser() {
+    public void nullUser() {
         boolean result = userDao.updateUser(null);
 
         // Assert that the update failed

@@ -170,13 +170,13 @@ public class UserDaoImpl implements UserDao {
             // Check the result of the query
             if (resultSet.next()) {
                 int count = resultSet.getInt(1);
-                return count > 0; // Return true if the user exists in the database
+                return count > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false; // Return false if an exception occurred or the query failed
+        return false;
     }
 }
 

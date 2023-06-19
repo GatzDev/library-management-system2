@@ -2,7 +2,6 @@ package library_management.test.userTest;
 
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +28,6 @@ public class getAllUsersTest {
 
     @AfterEach
     public void cleanup() {
-        // Close the connection to the database
         try {
             DatabaseManagerTest.getConnection().close();
         } catch (SQLException e) {
@@ -38,14 +36,14 @@ public class getAllUsersTest {
     }
 
     @Test
-    public void testGetAllUsers() {
+    public void allUsers() {
         List<User> userList = userDao.getAllUsers();
 
         assertNotNull(userList);
         assertFalse(userList.isEmpty());
     }
     @Test
-    public void testGetAllUsers_ReturnsCorrectUserCount() {
+    public void returnsCorrectUserCount() {
         List<User> userList = userDao.getAllUsers();
 
         int expectedUserCount = 75; // Set the expected user !!!

@@ -1,59 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My last commit V 0.2">
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/addAuthorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsWithIdTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getMostProlificAuthorsTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/removeAuthorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/searchAuthorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/updateAuthorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/addBookTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getAllBooksTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getAvailableBooksTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getBookByIdTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getMostPopularBooksTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/removeBookTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/searchBooksTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/updateBookTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/transactionTest/addTransactionTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/addUserTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/deleteuserTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getAllUsersTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getMostActiveUsersTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getUserByIdTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/searchUsersTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/updateUserTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/util/DatabaseManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/library_management/util/DatabaseManagerTest.java" afterDir="false" />
+    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My last commit V 0.5">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/TerminalInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/dao/AuthorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/AuthorDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/dao/BookDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/BookDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/dao/TransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/TransactionDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/entity/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/entity/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/BaseEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/entity/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Book.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/impl/AuthorDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/AuthorDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/impl/BookDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/BookDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/impl/TransactionDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/TransactionDaoImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/impl/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/menu/AuthorMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/AuthorMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/menu/BookMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/BookMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/menu/ReportsMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/ReportsMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/menu/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/UserMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/AuthorDaoImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/BookDaoImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/TransactionDaoImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/UserDaoImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/util/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsWithIdTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsWithIdTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/authorTest/getMostProlificAuthorsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getMostProlificAuthorsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/authorTest/updateAuthorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/updateAuthorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/addBookTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/addBookTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/getAvailableBooksTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getAvailableBooksTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/getBookByIdTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getBookByIdTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/getMostPopularBooksTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getMostPopularBooksTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/removeBookTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/removeBookTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/searchBooksTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/searchBooksTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/bookTest/updateBookTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/updateBookTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/transactionTest/addTransactionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/transactionTest/addTransactionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/userTest/addUserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/userTest/addUserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/userTest/getAllUsersTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getAllUsersTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/userTest/getMostActiveUsersTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getMostActiveUsersTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/userTest/getUserByIdTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getUserByIdTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/userTest/searchUsersTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/userTest/searchUsersTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/userTest/updateUserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/userTest/updateUserTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +214,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686315069188</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="My last commit V 0.5">
+      <created>1687167721847</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1687167721847</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -266,7 +241,8 @@
     <MESSAGE value="My before last commit" />
     <MESSAGE value="My  last commit" />
     <MESSAGE value="My last commit V 0.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="My last commit V 0.2" />
+    <MESSAGE value="My last commit V 0.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="My last commit V 0.5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

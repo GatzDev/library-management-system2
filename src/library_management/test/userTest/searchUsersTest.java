@@ -2,7 +2,6 @@ package library_management.test.userTest;
 
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,7 @@ public class searchUsersTest {
     }
 
     @Test
-    public void testSearchUsers_ReturnsEmptyListWhenNoMatchesFound() {
+    public void returnsEmptyListNoMatches() {
         String keyword = "Alice";
 
         List<User> userList = userDao.searchUsers(keyword);
@@ -48,7 +47,7 @@ public class searchUsersTest {
     }
 
     @Test
-    public void testSearchUsers_ReturnsMatchingUsers() {
+    public void returnsMatchingUsers() {
         //User user = new User("Turbo22", "turrro@gmail.com");
         //userDao.addUser(user);
 

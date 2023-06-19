@@ -21,18 +21,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class getMostPopularBooksTests {
     private BookDao bookDao;
-    private AuthorDao authorDao;
 
     private TransactionDao transactionDao;
 
     @BeforeEach
     public void setup() {
-        // Set up the database connection
         DatabaseManagerTest.connect();
 
         Connection connection = DatabaseManagerTest.getConnection();
 
-        authorDao = new AuthorDaoImpl(connection);
         bookDao = new BookDaoImpl(connection);
         transactionDao = new TransactionDaoImpl(connection);
     }
@@ -47,14 +44,14 @@ public class getMostPopularBooksTests {
     }
 
     @Test
-    public void testGetMostPopularBooksEmpty() {
+    public void popularBooksEmpty() {
         List<Book> mostPopularBooks = bookDao.getMostPopularBooks(3);
 
         assertTrue(mostPopularBooks.isEmpty());
     }
 
     @Test
-    public void testGetMostPopularBooks() {
+    public void popularBooks() {
         int limit = 5;
 
         List<Book> popularBooks = bookDao.getMostPopularBooks(limit);

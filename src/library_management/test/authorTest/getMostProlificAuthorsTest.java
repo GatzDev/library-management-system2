@@ -28,7 +28,7 @@ public class getMostProlificAuthorsTest {
 
     @Test
     public void mostProlificAuthorsWithLimit() {
-        Author author1 = new Author("John Doe", 1980);
+        Author author1 = new Author("Johny Bravo", 1980);
         author1.setBookCount(10);
         authorDao.addAuthor(author1);
 
@@ -42,10 +42,8 @@ public class getMostProlificAuthorsTest {
 
         List<Author> prolificAuthors = authorDao.getMostProlificAuthors(2);
 
-        // Assert  expected number of authors
         assertEquals(2, prolificAuthors.size());
 
-        // Assert that the authors are in the correct order based on book count
         assertEquals(author3, prolificAuthors.get(0));
         assertEquals(author1, prolificAuthors.get(1));
     }
@@ -54,7 +52,6 @@ public class getMostProlificAuthorsTest {
     public void mostProlificAuthorsWithZeroLimit() {
         List<Author> prolificAuthors = authorDao.getMostProlificAuthors(0);
 
-        // Assert list is empty
         assertTrue(prolificAuthors.isEmpty());
     }
 }

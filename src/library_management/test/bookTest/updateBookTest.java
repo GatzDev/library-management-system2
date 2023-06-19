@@ -2,11 +2,9 @@ package library_management.test.bookTest;
 
 import library_management.dao.AuthorDao;
 import library_management.dao.BookDao;
-import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +47,9 @@ public class updateBookTest {
 
     }
 
-
     @Test
     public void WithValidData() {
-//        Author author = new Author("John Doe", 1980);
+//        Author author = new Author("Vlado Nas", 1980);
 //        authorDao.addAuthor(author);
 
         Book book = new Book("Sample Book 2", authorDao.getAuthorById(10), 2021, "1234567890", 1);
@@ -78,9 +75,9 @@ public class updateBookTest {
 
     @Test
     public void NonExistingBook() {
-        Book nonExisting = new Book("Sample Book", authorDao.getAuthorById(10), 2021, "1234567890", 5);
+        Book nonExisting = new Book("Sample Book 2", authorDao.getAuthorById(10), 2021, "1234567890", 5);
         bookDao.addBook(nonExisting);
-        nonExisting.setId(1000); // Assuming ID 1000 does not exist in the database
+        nonExisting.setId(1000);
 
         boolean updated = bookDao.updateBook(nonExisting);
 
@@ -90,7 +87,7 @@ public class updateBookTest {
     @Test
     public void invalidISBN() {
 
-        Book book = new Book("Sample Book", authorDao.getAuthorById(10), 2021, "1234567890", 5);
+        Book book = new Book("Sample Book 3", authorDao.getAuthorById(10), 2021, "1234567890", 5);
         bookDao.addBook(book);
         int bookId = book.getId();
 
@@ -105,7 +102,7 @@ public class updateBookTest {
 
     @Test
     public void withZeroStock() {
-        Book book = new Book("Sample Book", authorDao.getAuthorById(10), 2021, "1234567890", 5);
+        Book book = new Book("Sample Book 4", authorDao.getAuthorById(10), 2021, "1234567890", 5);
         bookDao.addBook(book);
         int bookId = book.getId();
 

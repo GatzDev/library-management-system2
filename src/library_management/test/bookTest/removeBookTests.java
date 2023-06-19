@@ -6,7 +6,6 @@ import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,21 +45,18 @@ public class removeBookTests {
 
     @Test
     public void WithExistingId() {
-        // Create a test author and add it to the database
         Author author = new Author("John Doe", 1980);
         authorDao.addAuthor(author);
 
-        // Create a test book and add it to the database
-        Book book = new Book("Sample Book", authorDao.getAuthorById(10), 2021, "1234567890", 5);
+        Book book = new Book("Sample Book 33", authorDao.getAuthorById(10), 2021, "1234567890", 5);
         bookDao.addBook(book);
 
-        // Get the ID of the added book
         int bookId = book.getId();
 
-        // Remove the book from the database
+        // Remove from  database
         boolean removed = bookDao.removeBook(bookId);
 
-        // Assert that the book was removed successfully
+        // Assert removed successfully
         assertTrue(removed);
     }
 

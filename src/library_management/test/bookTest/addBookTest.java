@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,7 +54,7 @@ public class addBookTest {
         Author author = new Author("Test Book", 1980);
         authorDao.addAuthor(author);
 
-        Book book = new Book("Sample Book", authorDao.getAuthorById(4), 2020, "34534545443", 1);
+        Book book = new Book("Sample Book 5", authorDao.getAuthorById(4), 2020, "34534545443", 1);
         boolean added = bookDao.addBook(book);
 
         assertTrue(added);
@@ -64,7 +63,7 @@ public class addBookTest {
     @Test
     public void WithNonExistingAuthor() {
 
-        Book book = new Book("Test Book", authorDao.getAuthorById(100), 2021, "876876865675", 1);
+        Book book = new Book("Test Book 2", authorDao.getAuthorById(100), 2021, "876876865675", 1);
         boolean added = bookDao.addBook(book);
 
         assertFalse(added);
@@ -72,14 +71,14 @@ public class addBookTest {
 
     @Test
     public void WithNegativePublicationYear() {
-        Book book = new Book("Book Title", authorDao.getAuthorById(10), -2022, "9781234567890", 1);
+        Book book = new Book("Book Title 3", authorDao.getAuthorById(10), -2022, "9781234567890", 1);
         boolean added = bookDao.addBook(book);
         assertFalse(added);
     }
 
     @Test
     public void WithStockZero() {
-        Book book = new Book("Book Title", authorDao.getAuthorById(10), 2022, "9781234567890", 0);
+        Book book = new Book("Book Title 6", authorDao.getAuthorById(10), 2022, "9781234567890", 0);
         boolean added = bookDao.addBook(book);
         assertFalse(added);
 

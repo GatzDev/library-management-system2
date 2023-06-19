@@ -29,20 +29,16 @@ public class getAllAuthorsWithIdTest {
     }
     @Test
     public void getAllAuthorsWithId() {
-        // Create test authors and add them to the database
         Author author1 = new Author("Guy Ritchie", 1986);
         authorDao.addAuthor(author1);
 
         Author author2 = new Author("Jane Smith", 1988);
         authorDao.addAuthor(author2);
 
-        // Retrieve all authors with their IDs
         List<Author> authors = authorDao.getAllAuthorsWithId();
 
-        // Assert that the list is not empty
         assertFalse(authors.isEmpty());
 
-        // Assert that the list contains the added authors
         assertTrue(authors.contains(author1));
         assertTrue(authors.contains(author2));
     }

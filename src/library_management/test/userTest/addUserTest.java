@@ -2,7 +2,6 @@ package library_management.test.userTest;
 
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -47,7 +45,6 @@ public class addUserTest {
         }
     }
 
-
     @Test
     public void testAddUser() {
         User user = new User("John Wick", "john.whick99@gmail.com");
@@ -57,12 +54,10 @@ public class addUserTest {
         List<User> users = userDao.getAllUsers();
 
         Assertions.assertTrue(users.contains(user));
-
     }
 
-
     @Test
-    public void testAddUser_EmptyName_Failure() {
+    public void emptyName() {
         User user = new User("", "john.whick99@gmail.com");
 
         userDao.addUser(user);
@@ -71,14 +66,14 @@ public class addUserTest {
     }
 
     @Test
-    public void testAddUser_InvalidEmail_Failure() {
+    public void InvalidEmail() {
         // Create a user with an invalid email
-        User user = new User("John Doe", "invalid_email");
+        User user = new User("Johny Bravo", "invalid_email");
 
         // Call the addUser method with the user with an invalid email
         userDao.addUser(user);
 
-        // Perform assertions to verify that the user was not added (e.g., check the database or other conditions)
+        // Perform assertions to verify that the user was not added
         assertFalse(userDao.userAddedToDatabase(user));
     }
 

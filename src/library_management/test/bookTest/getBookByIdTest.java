@@ -6,7 +6,6 @@ import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +41,7 @@ public class getBookByIdTest {
     }
 
     @Test
-    public void testGetExistingBookById() {
+    public void existingBookById() {
         int bookId = 53;
 
         Book book = bookDao.getBookById(bookId);

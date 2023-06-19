@@ -37,13 +37,10 @@ public class getAllAuthorsTest {
         Author author2 = new Author("Jane Adams", 1980);
         authorDao.addAuthor(author2);
 
-        // Retrieve all authors
         List<Author> authors = authorDao.getAllAuthors();
 
-        // Assert that the list is not empty
         assertFalse(authors.isEmpty());
 
-        // Assert that the list contains the added authors
         //assertTrue(authors.contains(author1));
         assertTrue(authors.contains(author2));
     }

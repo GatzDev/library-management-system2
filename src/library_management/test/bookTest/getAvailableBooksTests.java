@@ -2,11 +2,9 @@ package library_management.test.bookTest;
 
 import library_management.dao.AuthorDao;
 import library_management.dao.BookDao;
-import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,11 +48,10 @@ public class getAvailableBooksTests {
     }
 
     @Test
-    public void testGetAvailableBooksEmpty() {
-        // Retrieve available books from an empty database
+    public void availableBooksEmpty() {
         List<Book> availableBooks = bookDao.getAvailableBooks();
 
-        // Assert that the list is empty
+        // Assert list is empty
         assertTrue(availableBooks.isEmpty());
     }
 

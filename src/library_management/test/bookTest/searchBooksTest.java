@@ -2,7 +2,6 @@ package library_management.test.bookTest;
 
 import library_management.dao.AuthorDao;
 import library_management.dao.BookDao;
-import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
@@ -23,7 +22,6 @@ public class searchBooksTest {
 
     @BeforeEach
     public void setup() {
-        // Set up the database connection
         DatabaseManagerTest.connect();
 
         Connection connection = DatabaseManagerTest.getConnection();

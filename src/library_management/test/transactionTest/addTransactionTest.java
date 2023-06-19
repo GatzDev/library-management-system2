@@ -8,7 +8,6 @@ import library_management.impl.AuthorDaoImpl;
 import library_management.impl.BookDaoImpl;
 import library_management.impl.TransactionDaoImpl;
 import library_management.impl.UserDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +48,7 @@ public class addTransactionTest {
     }
 
     @Test
-    public void testAddTransaction_ValidTransaction_ReturnsAddedTransactionWithId() {
+    public void testAddTransaction() {
         // Set up test data
         Author author = new Author("sfsfsfsdf", 1961);
         authorDao.addAuthor(author);
@@ -65,20 +64,17 @@ public class addTransactionTest {
         int bookId = book.getId();
 
         LocalDate borrowingDate = LocalDate.now();
-        LocalDate returnDate = borrowingDate.plusDays(12);
+        LocalDate returnDate = null;
 
         Transaction transaction = new Transaction(user, book, borrowingDate, returnDate);
 
-        // Perform the addTransaction() operation
         Transaction addedTransaction = transactionDao.addTransaction(transaction);
 
-        // Assert that the returned transaction is not null
         assertNotNull(addedTransaction);
 
         // Assert that the added transaction has a valid ID
         assertTrue(addedTransaction.getId() > 0);
 
-        // Verify that the transaction details are correctly saved in the database
         Transaction retrievedTransaction = transactionDao.getTransactionById(addedTransaction.getId());
         assertNotNull(retrievedTransaction);
         assertNotNull(retrievedTransaction.getUser());
@@ -88,19 +84,5 @@ public class addTransactionTest {
         assertEquals(borrowingDate, retrievedTransaction.getBorrowingDate());
         assertNull(retrievedTransaction.getReturnDate());
     }
-
-
-
-//    @Test
-//    public void testAddTransaction_NullUser_ReturnsNull() {
-//        // Set up test data
-//        Transaction transaction = new Transaction(null, new Book("The Great Gatsby", "F. Scott Fitzgerald"), LocalDate.now());
-//
-//        // Perform the addTransaction() operation
-//         addedTransaction = transactionDao.addTransaction(transaction);
-//
-//        // Assert that the returned transaction is null
-//        assertNull(addedTransaction);
-//    }
 }
 

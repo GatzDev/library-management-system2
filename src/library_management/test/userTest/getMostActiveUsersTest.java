@@ -2,7 +2,6 @@ package library_management.test.userTest;
 
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
-import library_management.util.DatabaseManager;
 import library_management.util.DatabaseManagerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,14 +36,11 @@ public class getMostActiveUsersTest {
     }
 
     @Test
-    public void testGetMostActiveUsers_ReturnsLimitedNumberOfUsers() {
-        // Set up test data
-        int limit = 3; // Set the limit for the number of active users to retrieve
+    public void returnsLimitedNumberOfUsers() {
+        int limit = 3;
 
-        // Perform the getMostActiveUsers() operation
         List<User> activeUsers = userDao.getMostActiveUsers(limit);
 
-        // Assert that the returned list is not null
         assertNotNull(activeUsers);
 
         // Assert that the number of returned active users is equal to the limit
@@ -52,7 +48,7 @@ public class getMostActiveUsersTest {
     }
 
     @Test
-    public void testGetMostActiveUsers_ReturnsCorrectUserTransactionCounts() {
+    public void returnsCorrectUserTransactionCounts() {
         int limit = 5;
 
         List<User> activeUsers = userDao.getMostActiveUsers(limit);
