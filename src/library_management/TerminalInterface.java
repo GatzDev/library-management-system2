@@ -14,14 +14,12 @@ import library_management.menu.AuthorMenu;
 import library_management.menu.BookMenu;
 import library_management.menu.ReportsMenu;
 import library_management.menu.UserMenu;
-import library_management.util.Constants;
+import library_management.util.DatabaseManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,21 +38,15 @@ public class TerminalInterface {
     public TerminalInterface() {
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-        // Create a database connection
-        try {
-            Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
+        DatabaseManager.connect();
 
-            bookDao = new BookDaoImpl(connection);
-            authorDao = new AuthorDaoImpl(connection);
-            userDao = new UserDaoImpl(connection);
-            transactionDao = new TransactionDaoImpl(connection);
+        Connection connection = DatabaseManager.getConnection();
 
-        } catch (SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
+        bookDao = new BookDaoImpl(connection);
+        authorDao = new AuthorDaoImpl(connection);
+        userDao = new UserDaoImpl(connection);
+        transactionDao = new TransactionDaoImpl(connection);
     }
-
     public void run() {
         System.out.println("Welcome to the Library System!");
 
@@ -78,7 +70,7 @@ public class TerminalInterface {
                     bookMenu.bMenu();
                     break;
                 case 2:
-                    AuthorMenu authorMenu = new AuthorMenu(bookDao);
+                    AuthorMenu authorMenu = new AuthorMenu();
                     authorMenu.aMenu();
                     break;
                 case 3:
@@ -105,12 +97,7 @@ public class TerminalInterface {
     }
 
     private void borrowBook() {
-        List<User> users = userDao.getAllUsers();
-
-        System.out.println("List of Users:");
-        for (User user : users) {
-            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
-        }
+        displayUsers();
 
         try {
             System.out.println("Enter the ID of the user:");
@@ -124,7 +111,7 @@ public class TerminalInterface {
             }
 
             List<Book> books = bookDao.getAllBooks();
-            System.out.println("List of Authors:");
+            System.out.println("--- List of Authors ---");
             for (Book book : books) {
                 System.out.println("ID: " + book.getId() + ", Name: " + book.getTitle() + ", Stock:" + book.getStock() );
             }
@@ -148,7 +135,7 @@ public class TerminalInterface {
             LocalDate borrowingDate = LocalDate.now();
            // LocalDate returnDate = null;
 
-            Transaction transaction = new Transaction(user, book, borrowingDate, null);  // Pass the 'user' object here
+            Transaction transaction = new Transaction(user, book, borrowingDate, null);
             transactionDao.addTransaction(transaction);
 
             book.setStock(book.getStock() - 1);
@@ -163,12 +150,7 @@ public class TerminalInterface {
 
 
     private void returnBook() {
-        List<User> users = userDao.getAllUsers();
-
-        System.out.println("List of Users:");
-        for (User user : users) {
-            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
-        }
+        displayUsers();
 
         try {
             System.out.println("Enter the ID of the user:");
@@ -188,7 +170,7 @@ public class TerminalInterface {
                 return;
             }
 
-            System.out.println("List of Borrowed Books:");
+            System.out.println("--- List of Borrowed Books ---");
             for (Book book : borrowedBooks) {
                 System.out.println("ID: " + book.getId() + ", Title: " + book.getTitle());
             }
@@ -224,7 +206,14 @@ public class TerminalInterface {
         }
     }
 
+    private void displayUsers() {
+        List<User> users = userDao.getAllUsers();
 
+        System.out.println("--- List of Users ---");
+        for (User user : users) {
+            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+        }
+    }
 
     private void exit() {
         System.out.println("Exiting the application...");

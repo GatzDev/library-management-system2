@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My  last commit">
+    <list default="true" id="f9148612-c3db-4aaa-8649-41185d818a37" name="Changes" comment="My last commit V 0.2">
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/addAuthorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getAllAuthorsWithIdTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/getMostProlificAuthorsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/removeAuthorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/searchAuthorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/authorTest/updateAuthorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/addBookTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getAllBooksTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getAvailableBooksTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getBookByIdTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/getMostPopularBooksTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/removeBookTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/searchBooksTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/bookTest/updateBookTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/transactionTest/addTransactionTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/addUserTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/deleteuserTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getAllUsersTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getMostActiveUsersTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/getUserByIdTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/searchUsersTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/test/userTest/updateUserTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/util/DatabaseManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/library_management/util/DatabaseManagerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/CreateTablesInDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/Main.java" afterDir="false" />
@@ -9,6 +34,7 @@
       <change beforePath="$PROJECT_DIR$/src/library_management/dao/AuthorDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/AuthorDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/dao/BookDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/BookDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/dao/TransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/TransactionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/dao/UserDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Author.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/BaseEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/entity/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/entity/Book.java" afterDir="false" />
@@ -22,9 +48,12 @@
       <change beforePath="$PROJECT_DIR$/src/library_management/menu/BookMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/BookMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/menu/ReportsMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/ReportsMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/menu/UserMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/menu/UserMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/BookDaoImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/BookDaoImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/library_management/test/TransactionDaoImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/test/TransactionDaoImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/AuthorDaoImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/BookDaoImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/TransactionDaoImplTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/test/UserDaoImplTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/library_management/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/library_management/util/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/library_management/util/Input.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,64 +121,65 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TransactionDaoImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="getAllBooksTest.allBooks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="library management system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="library_management.test.*" />
+          <option name="PATTERN" value="library_management.test.bookTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="library_management.test" />
-      <option name="MAIN_CLASS_NAME" value="library_management.test.TransactionDaoImplTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TransactionDaoImplTest.testAddTransaction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="library management system" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="library_management.test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="library_management.test" />
-      <option name="MAIN_CLASS_NAME" value="library_management.test.TransactionDaoImplTest" />
-      <option name="METHOD_NAME" value="testAddTransaction" />
+      <option name="PACKAGE_NAME" value="library_management.test.bookTest" />
+      <option name="MAIN_CLASS_NAME" value="library_management.test.bookTest.getAllBooksTest" />
+      <option name="METHOD_NAME" value="allBooks" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TransactionDaoImplTest.testGetAllTransactions" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="getAllBooksTest.booksEmpty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="library management system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="library_management.test.*" />
+          <option name="PATTERN" value="library_management.test.bookTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="library_management.test" />
-      <option name="MAIN_CLASS_NAME" value="library_management.test.TransactionDaoImplTest" />
-      <option name="METHOD_NAME" value="testGetAllTransactions" />
+      <option name="PACKAGE_NAME" value="library_management.test.bookTest" />
+      <option name="MAIN_CLASS_NAME" value="library_management.test.bookTest.getAllBooksTest" />
+      <option name="METHOD_NAME" value="booksEmpty" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TransactionDaoImplTest.testGetTransactionById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="getAllBooksTest.testGetAllBooksEmpty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="library management system" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="library_management.test.*" />
+          <option name="PATTERN" value="library_management.test.bookTest.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="library_management.test" />
-      <option name="MAIN_CLASS_NAME" value="library_management.test.TransactionDaoImplTest" />
-      <option name="METHOD_NAME" value="testGetTransactionById" />
+      <option name="PACKAGE_NAME" value="library_management.test.bookTest" />
+      <option name="MAIN_CLASS_NAME" value="library_management.test.bookTest.getAllBooksTest" />
+      <option name="METHOD_NAME" value="testGetAllBooksEmpty" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="getAllBooksTest.testGetAllBooksWithInvalidISBN" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="library management system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="library_management.test.bookTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="library_management.test.bookTest" />
+      <option name="MAIN_CLASS_NAME" value="library_management.test.bookTest.getAllBooksTest" />
+      <option name="METHOD_NAME" value="testGetAllBooksWithInvalidISBN" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,10 +188,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.TransactionDaoImplTest.testGetAllTransactions" />
-        <item itemvalue="JUnit.TransactionDaoImplTest.testAddTransaction" />
-        <item itemvalue="JUnit.TransactionDaoImplTest" />
-        <item itemvalue="JUnit.TransactionDaoImplTest.testGetTransactionById" />
+        <item itemvalue="JUnit.getAllBooksTest.booksEmpty" />
+        <item itemvalue="JUnit.getAllBooksTest.allBooks" />
+        <item itemvalue="JUnit.getAllBooksTest.testGetAllBooksWithInvalidISBN" />
+        <item itemvalue="JUnit.getAllBooksTest.testGetAllBooksEmpty" />
       </list>
     </recent_temporary>
   </component>
@@ -209,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686126424773</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="My last commit V 0.2">
+      <created>1686315069188</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1686315069188</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,7 +265,8 @@
     <MESSAGE value="My second commit" />
     <MESSAGE value="My before last commit" />
     <MESSAGE value="My  last commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="My  last commit" />
+    <MESSAGE value="My last commit V 0.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="My last commit V 0.2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -241,7 +279,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/library_management_system$Main.ic" NAME="Main Coverage Results" MODIFIED="1686212269655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/library_management_system$Main.ic" NAME="Main Coverage Results" MODIFIED="1686750909503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>library_management.*</FILTER>
     </SUITE>
   </component>

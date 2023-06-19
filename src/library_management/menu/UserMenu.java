@@ -4,6 +4,7 @@ import library_management.dao.UserDao;
 import library_management.entity.User;
 import library_management.impl.UserDaoImpl;
 import library_management.util.Constants;
+import library_management.util.DatabaseManager;
 import library_management.util.Input;
 
 import java.io.BufferedReader;
@@ -25,14 +26,10 @@ public class UserMenu {
     public UserMenu() {
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-        try {
-            Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
-            userDao = new UserDaoImpl(connection);
-        } catch (
-                SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
+        DatabaseManager.connect();
+
+        Connection connection = DatabaseManager.getConnection();
+        userDao = new UserDaoImpl(connection);
     }
 
     public void uMenu() {
@@ -66,26 +63,37 @@ public class UserMenu {
         }
     }
 
+
     private void addUser() {
         try {
             System.out.println("Enter the name of the user:");
             String name = reader.readLine();
 
-            String email;
-            boolean validEmail = false;
+            boolean validName = false;
 
-            while (!validEmail) {
-                System.out.println("Enter the email of the user:");
-                email = reader.readLine();
-
-                Matcher matcher = EMAIL_PATTERN.matcher(email);
-                if (matcher.matches()) {
-                    validEmail = true;
-                    User user = new User(name, email);
-                    userDao.addUser(user);
-                    System.out.println("User added successfully!");
+            while (!validName) {
+                if (name == null || name.trim().isEmpty()) {
+                    System.out.println("Invalid name. Please enter a valid name.");
+                    name = reader.readLine();
                 } else {
-                    System.out.println("Invalid email format. Please enter a valid email.");
+                    validName = true;
+                    System.out.println("Enter the email of the user:");
+                    String email = reader.readLine();
+
+                    boolean validEmail = false;
+
+                    while (!validEmail) {
+                        Matcher matcher = EMAIL_PATTERN.matcher(email);
+                        if (matcher.matches()) {
+                            validEmail = true;
+                            User user = new User(name, email);
+                            userDao.addUser(user);
+                            System.out.println("User added successfully!");
+                        } else {
+                            System.out.println("Invalid email format. Please enter a valid email.");
+                            email = reader.readLine();
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
@@ -93,10 +101,11 @@ public class UserMenu {
         }
     }
 
+
     private void updateUser() {
         List<User> users = userDao.getAllUsers();
 
-        System.out.println("List of Users:");
+        System.out.println("--- List of Users ---");
         for (User user : users) {
             System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
         }
@@ -124,7 +133,18 @@ public class UserMenu {
             String newEmail = reader.readLine();
 
             if (!newEmail.isEmpty()) {
-                user.setEmail(newEmail);
+                boolean validEmail = false;
+
+                while (!validEmail) {
+                    Matcher matcher = EMAIL_PATTERN.matcher(newEmail);
+                    if (matcher.matches()) {
+                        validEmail = true;
+                        user.setEmail(newEmail);
+                    } else {
+                        System.out.println("Invalid email format. Please enter a valid email.");
+                        newEmail = reader.readLine();
+                    }
+                }
             }
 
             userDao.updateUser(user);
@@ -135,43 +155,48 @@ public class UserMenu {
         }
     }
 
-private void removeUser() {
-    List<User> users = userDao.getAllUsers();
+    private void removeUser() {
+        List<User> users = userDao.getAllUsers();
 
-    System.out.println("List of Users:");
-    for (User user : users) {
-        System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+        System.out.println("--- List of Users ---");
+        for (User user : users) {
+            System.out.println("ID: " + user.getId() + ", Name: " + user.getName());
+        }
+
+        System.out.println("Enter the ID of the user to remove:");
+        int userId = Input.readIntInput(reader);
+
+        User user = userDao.getUserById(userId);
+
+        if (user == null) {
+            System.out.println("User not found.");
+            return;
+        }
+
+        boolean removed = userDao.deleteUser(userId);
+        if (removed) {
+            System.out.println("User with ID: " + userId + " has been removed successfully.");
+        } else {
+            System.out.println("Failed to remove the user with ID: " + userId);
+        }
     }
-
-    System.out.println("Enter the ID of the user to remove:");
-    int userId = Input.readIntInput(reader);
-
-    User user = userDao.getUserById(userId);
-
-    if (user == null) {
-        System.out.println("User not found.");
-        return;
-    }
-
-    boolean removed = userDao.deleteUser(userId);
-    if (removed) {
-        System.out.println("User with ID: " + userId + " has been removed successfully.");
-    } else {
-        System.out.println("Failed to remove the user with ID: " + userId);
-    }
-}
 
     private void searchUsers() {
         try {
-            System.out.println("Enter the keyword to search for users:");
+            System.out.println("Enter the keyword:");
             String keyword = reader.readLine();
+
+            if (keyword.isEmpty()) {
+                System.out.println("Cannot be empty. Please enter a valid keyword.");
+                keyword = reader.readLine();
+            }
 
             List<User> users = userDao.searchUsers(keyword);
 
             if (users.isEmpty()) {
                 System.out.println("No users found.");
             } else {
-                System.out.println("Search results:");
+                System.out.println("--- Search results ---");
                 for (User user : users) {
                     System.out.println("ID: " + user.getId());
                     System.out.println("Name: " + user.getName());

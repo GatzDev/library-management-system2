@@ -1,6 +1,5 @@
 package library_management.entity;
 
-import java.util.List;
 
 public class Author extends BaseEntity {
     private String name;
@@ -31,7 +30,9 @@ public class Author extends BaseEntity {
     public void setBookCount(int bookCount) {
         this.bookCount = bookCount;
     }
-
-
+    @Override
+    public String toString() {
+        return "Author ID: " + getId() + ", Name: " + name + ", Birth Year: " + birthYear;
+    }
 }
 

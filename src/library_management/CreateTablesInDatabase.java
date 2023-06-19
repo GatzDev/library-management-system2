@@ -1,18 +1,15 @@
 package library_management;
-
-import library_management.util.Constants;
-
 import java.sql.*;
 
 
 class CreateTableInDataBase {
 
     public static void createTables(Connection conn) throws SQLException {
-        if (tablesExist(conn)) {
-            System.out.println("Tables already exist in the database.");
+        if (tablesExist(conn, "data_base")) {
+            System.out.println("Tables already exist.");
             return;
-        }else {
-            System.out.println("Tables created successfully!");
+        }else if (!tablesExist(conn, "data_base")){
+            System.out.println("Tables created successfully!!!");
         }
 
         Statement st = null;
@@ -67,11 +64,12 @@ class CreateTableInDataBase {
         }
     }
 
-        private static boolean tablesExist (Connection conn) throws SQLException {
-            DatabaseMetaData metadata = conn.getMetaData();
-            ResultSet rs = metadata.getTables(null, null, null, new String[]{"TABLE"});
-            return rs.next();
-        }
+    private static boolean tablesExist(Connection conn, String name) throws SQLException {
+        DatabaseMetaData metadata = conn.getMetaData();
+        ResultSet rs = metadata.getTables("data_base", "data_base", null, new String[]{"TABLE"});
+
+        return rs.next();
+    }
     }
 
 

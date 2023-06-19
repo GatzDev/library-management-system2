@@ -13,6 +13,7 @@ import library_management.impl.BookDaoImpl;
 import library_management.impl.TransactionDaoImpl;
 import library_management.impl.UserDaoImpl;
 import library_management.util.Constants;
+import library_management.util.DatabaseManager;
 import library_management.util.Input;
 
 import java.io.BufferedReader;
@@ -34,19 +35,14 @@ public class ReportsMenu {
     public ReportsMenu() {
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-        try {
+        DatabaseManager.connect();
 
-            Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
+        Connection connection = DatabaseManager.getConnection();
 
             bookDao = new BookDaoImpl(connection);
             authorDao = new AuthorDaoImpl(connection);
             userDao = new UserDaoImpl(connection);
             transactionDao = new TransactionDaoImpl(connection);
-
-        } catch (SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
     }
 
     public void generateReports() {
@@ -97,32 +93,27 @@ public class ReportsMenu {
         if (authors.isEmpty()) {
             System.out.println("No authors found.");
         } else {
-            System.out.println("All Authors:");
+            System.out.println("--- All Author ---");
             for (Author author : authors) {
-                System.out.println("ID: " + author.getId());
-                System.out.println("Name: " + author.getName());
-                System.out.println("Birth Year: " + author.getBirthYear());
+                System.out.println("ID: " + author.getId() + " Name: " + author.getName() + " Birth Year: " + author.getBirthYear());
                 System.out.println();
             }
         }
     }
 
-private void getAllBooks() {
-    List<Book> books = bookDao.getAllBooks();
-    if (books.isEmpty()) {
-        System.out.println("No books found.");
-    } else {
-        System.out.println("\nAll Books:");
-        for (Book book : books) {
-            System.out.println("ID: " + book.getId());
-            System.out.println("Title: " + book.getTitle());
-            System.out.println("Author: " + book.getAuthor().getName());
-            System.out.println("Publication Year: " + book.getPublicationYear());
-            System.out.println("ISBN: " + book.getISBN());
-            System.out.println();
+    private void getAllBooks() {
+        List<Book> books = bookDao.getAllBooks();
+        if (books.isEmpty()) {
+            System.out.println("No books found.");
+        } else {
+            System.out.println("\n--- All Books ---");
+            for (Book book : books) {
+                System.out.println("ID: " + book.getId() + " Title: " + book.getTitle() + " Author: " + book.getAuthor().getName());
+                System.out.println("Publication Year: " + book.getPublicationYear() + " ISBN: " + book.getISBN() + " Stock: " + book.getStock())   ;
+                System.out.println();
+            }
         }
     }
-}
 
     private void getAllUsers() {
         List<User> users = userDao.getAllUsers();
@@ -130,11 +121,9 @@ private void getAllBooks() {
         if (users.isEmpty()) {
             System.out.println("No users found.");
         } else {
-            System.out.println("Users:");
+            System.out.println("--- All Users ---");
             for (User user : users) {
-                System.out.println("ID: " + user.getId());
-                System.out.println("Name: " + user.getName());
-                System.out.println("Email: " + user.getEmail());
+                System.out.println("ID: " + user.getId() + " Name: " + user.getName() + " Email: " + user.getEmail());
                 System.out.println();
             }
         }
@@ -146,18 +135,14 @@ private void getAllBooks() {
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
         } else {
-            System.out.println("Transactions:");
+            System.out.println("--- All Transactions ---");
             for (Transaction transaction : transactions) {
-                System.out.println("User ID: " + transaction.getUser().getId());
-                System.out.println("User Name: " + transaction.getUser().getName());
-                System.out.println("Book ID: " + transaction.getBook().getId());
-                System.out.println("Book Name: " + transaction.getBook().getTitle());
-                System.out.println("Return Date: " + transaction.getReturnDate());
+                System.out.println("User ID: " + transaction.getUser().getId() + " User Name: " + transaction.getUser().getName() + " Book ID: " + transaction.getBook().getId());
+                System.out.println("Book Name: " + transaction.getBook().getTitle() + " Return Date: " + transaction.getReturnDate());
                 System.out.println();
             }
         }
     }
-
 
     private void getMostProlificAuthors() {
         System.out.println("Enter the limit for the number of authors:");
@@ -169,11 +154,9 @@ private void getAllBooks() {
             if (authors.isEmpty()) {
                 System.out.println("No authors found.");
             } else {
-                System.out.println("Most Prolific Authors:");
+                System.out.println("--- Most Prolific Authors ---");
                 for (Author author : authors) {
-                    System.out.println("Author ID: " + author.getId());
-                    System.out.println("Author Name: " + author.getName());
-                    System.out.println("Book Count: " + author.getBookCount());
+                    System.out.println("Author ID: " + author.getId() + " Author Name: " + author.getName() + " Book Count: " + author.getBookCount());
                     System.out.println();
                 }
             }
@@ -193,11 +176,9 @@ private void getAllBooks() {
             if (popularBooks.isEmpty()) {
                 System.out.println("No popular books found.");
             } else {
-                System.out.println("Most Popular Books:");
+                System.out.println("--- Most Popular Books ---");
                 for (Book book : popularBooks) {
-                    System.out.println("Book ID: " + book.getId());
-                    System.out.println("Book Title: " + book.getTitle());
-                    System.out.println("Transaction Count: " + book.getTransactionCount());
+                    System.out.println("Book ID: " + book.getId() + " Book Title: " + book.getTitle() + " Transaction Count: " + book.getTransactionCount());
                     System.out.println();
                 }
             }
@@ -217,11 +198,9 @@ private void getAllBooks() {
             if (activeUsers.isEmpty()) {
                 System.out.println("No active users found.");
             } else {
-                System.out.println("Most Active Users:");
+                System.out.println("--- Most Active Users ---");
                 for (User user : activeUsers) {
-                    System.out.println("User ID: " + user.getId());
-                    System.out.println("User Name: " + user.getName());
-                    System.out.println("Transaction Count: " + user.getTransactionCount());
+                    System.out.println("User ID: " + user.getId() + " User Name: " + user.getName() + " Transaction Count: " + user.getTransactionCount());
                     System.out.println();
                 }
             }

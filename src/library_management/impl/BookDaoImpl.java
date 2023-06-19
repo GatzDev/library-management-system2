@@ -1,8 +1,10 @@
 package library_management.impl;
+
 import library_management.dao.AuthorDao;
 import library_management.entity.Author;
 import library_management.entity.Book;
 import library_management.dao.BookDao;
+import library_management.util.Constants;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.List;
 
 public class BookDaoImpl implements BookDao {
     private final Connection connection;
-    private AuthorDao authorDao;
+    private final AuthorDao authorDao;
 
     public BookDaoImpl(Connection connection) {
         this.connection = connection;
@@ -22,14 +24,44 @@ public class BookDaoImpl implements BookDao {
         try {
             String query = "INSERT INTO books (title, author_id, publication_year, isbn, stock) " +
                     "VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement sta = connection.prepareStatement(query);
+            PreparedStatement sta = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             sta.setString(1, book.getTitle());
+
+            Author author = book.getAuthor();
+            if (author == null) {
+                System.out.println("Cannot add a book without an author.");
+                return false;
+            }
             sta.setInt(2, book.getAuthor().getId());
             sta.setInt(3, book.getPublicationYear());
+
+            String isbn = book.getISBN();
+            if (!Constants.ISBN_PATTERN.matcher(isbn).matches()) {
+                System.out.println("Invalid ISBN format.");
+                return false;
+            }
+
             sta.setString(4, book.getISBN());
+
+            int stock = book.getStock();
+            if (stock <= 0) {
+                return false;
+            }
+
             sta.setInt(5, book.getStock());
-            sta.executeUpdate();
-            return true;
+            int insertedRow = sta.executeUpdate();
+
+            if (insertedRow > 0) {
+                // Get t ID from the statement
+                ResultSet generatedKeys = sta.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    book.setId(generatedId);
+                    return true;
+                }
+            }
+
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -45,7 +77,19 @@ public class BookDaoImpl implements BookDao {
             sta.setString(1, book.getTitle());
             sta.setInt(2, book.getAuthor().getId());
             sta.setInt(3, book.getPublicationYear());
+
+            String isbn = book.getISBN();
+            if (!Constants.ISBN_PATTERN.matcher(isbn).matches()) {
+                System.out.println("Invalid ISBN format.");
+                return false;
+            }
+
             sta.setString(4, book.getISBN());
+
+            int stock = book.getStock();
+            if (stock <= 0) {
+                return false;
+            }
             sta.setInt(5, book.getStock());
             sta.setInt(6, book.getId());
             int rowsUpdated = sta.executeUpdate();
@@ -82,7 +126,9 @@ public class BookDaoImpl implements BookDao {
     public List<Book> searchBooks(String keyword, AuthorDao authorDao) {
         List<Book> books = new ArrayList<>();
         try {
-            String query = "SELECT * FROM books WHERE title LIKE ? OR author_id IN (SELECT id FROM authors WHERE name LIKE ?) OR isbn LIKE ?";
+            String query = "SELECT * FROM books " +
+                    "WHERE title LIKE ? OR author_id IN " +
+                    "(SELECT id FROM authors WHERE name LIKE ?) OR isbn LIKE ?";
             PreparedStatement sta = connection.prepareStatement(query);
             sta.setString(1, "%" + keyword + "%");
             sta.setString(2, "%" + keyword + "%");
@@ -133,37 +179,37 @@ public class BookDaoImpl implements BookDao {
                 books.add(book);
             }
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve books.");
+            System.out.println("Failed to get books.");
             e.printStackTrace();
         }
         return books;
     }
 
-@Override
-public Book getBookById(int bookId) {
-    Book book = null;
-    try {
-        String query = "SELECT * FROM books WHERE id = ?";
-        PreparedStatement sta = connection.prepareStatement(query);
-        sta.setInt(1, bookId);
-        ResultSet result = sta.executeQuery();
-        if (result.next()) {
-            int id = result.getInt("id");
-            String title = result.getString("title");
-            int authorId = result.getInt("author_id");
-            int publicationYear = result.getInt("publication_year");
-            String isbn = result.getString("isbn");
-            int stock = result.getInt("stock");
+    @Override
+    public Book getBookById(int bookId) {
+        Book book = null;
+        try {
+            String query = "SELECT * FROM books WHERE id = ?";
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setInt(1, bookId);
+            ResultSet result = sta.executeQuery();
+            if (result.next()) {
+                int id = result.getInt("id");
+                String title = result.getString("title");
+                int authorId = result.getInt("author_id");
+                int publicationYear = result.getInt("publication_year");
+                String isbn = result.getString("isbn");
+                int stock = result.getInt("stock");
 
-            Author author = authorDao.getAuthorById(authorId);
-            book = new Book(id,title,author, publicationYear, isbn, stock);
+                Author author = authorDao.getAuthorById(authorId);
+                book = new Book(id, title, author, publicationYear, isbn, stock);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to get book by ID." + bookId);
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.out.println("Failed to retrieve the book by ID." + bookId);
-        e.printStackTrace();
+        return book;
     }
-    return book;
-}
 
 
     @Override
@@ -215,7 +261,7 @@ public Book getBookById(int bookId) {
                 int bookId = result.getInt("id");
                 String bookTitle = result.getString("title");
                 int transactionCount = result.getInt("transaction_count");
-                Book book = new Book( bookTitle);
+                Book book = new Book(bookTitle);
                 book.setId(bookId);
 
                 book.setTransactionCount(transactionCount);
@@ -247,12 +293,7 @@ public Book getBookById(int bookId) {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return bookCount;
-    }
-
-    public void setAuthorDao(AuthorDao authorDao) {
-        this.authorDao = authorDao;
     }
 }
 

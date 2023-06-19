@@ -11,7 +11,7 @@ public class Input {
                 String input = reader.readLine();
                 return Integer.parseInt(input);
             } catch (IOException | NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                System.out.println("Invalid input.");
             }
         }
     }
@@ -20,7 +20,7 @@ public class Input {
         try {
             return reader.readLine();
         } catch (IOException e) {
-            System.out.println("Error reading input. Please try again.");
+            System.out.println("Invalid input.");
             return null;
         }
     }

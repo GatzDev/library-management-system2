@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Transaction extends BaseEntity {
     private User user;
     private Book book;
-    private LocalDate borrowingDate;
+    private final LocalDate borrowingDate;
     private LocalDate returnDate;
 
 
@@ -16,7 +16,6 @@ public class Transaction extends BaseEntity {
         this.borrowingDate = borrowingDate;
         this.returnDate = returnDate;
     }
-
 
     public Transaction( LocalDate borrowingDate, LocalDate returnDate) {
         this.borrowingDate = borrowingDate;

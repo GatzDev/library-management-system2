@@ -1,13 +1,15 @@
 package library_management.impl;
+
 import library_management.dao.AuthorDao;
 import library_management.entity.Author;
+
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorDaoImpl implements AuthorDao {
-    private Connection connection;
-    private AuthorDao authorDao;
+    private final Connection connection;
 
     public AuthorDaoImpl(Connection connection) {
         this.connection = connection;
@@ -15,6 +17,16 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author addAuthor(Author author) {
+        if (author == null || author.getName() == null || author.getName().isEmpty()) {
+            System.out.println("Failed to add author.");
+            return null;
+        }
+
+        int currentYear = LocalDate.now().getYear();
+        if (author.getBirthYear() > currentYear || author.getBirthYear() < 0) {
+            System.out.println("Invalid birth year. Failed to add author.");
+            return null;
+        }
         try {
             String query = "INSERT INTO authors (name, birth_year) VALUES (?, ?)";
             PreparedStatement sta = connection.prepareStatement(query);
@@ -52,28 +64,25 @@ public class AuthorDaoImpl implements AuthorDao {
         try {
             String query = "SELECT id, name, birth_year FROM authors";
             PreparedStatement sta = connection.prepareStatement(query);
-            ResultSet rs = sta.executeQuery();
+            ResultSet result = sta.executeQuery();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                int birthYear = rs.getInt("birth_year");
+            while (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                int birthYear = result.getInt("birth_year");
 
                 Author author = new Author(name, birthYear);
                 author.setId(id);
                 authors.add(author);
             }
 
-            rs.close();
+            result.close();
             sta.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return authors;
     }
-
-
 
     @Override
     public boolean removeAuthor(int authorId) {
@@ -90,27 +99,27 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-@Override
-public List<Author> getAllAuthors() {
-    List<Author> authors = new ArrayList<>();
-    try {
-        String query = "SELECT id, name, birth_year FROM authors";
-        Statement sta = connection.createStatement();
-        ResultSet result = sta.executeQuery(query);
-        while (result.next()) {
-            int id = result.getInt("id");
-            String name = result.getString("name");
-            int birthYear = result.getInt("birth_year");
-            Author author = new Author(name, birthYear);
-            author.setId(id);
-            authors.add(author);
+    @Override
+    public List<Author> getAllAuthors() {
+        List<Author> authors = new ArrayList<>();
+        try {
+            String query = "SELECT id, name, birth_year FROM authors";
+            Statement sta = connection.createStatement();
+            ResultSet result = sta.executeQuery(query);
+            while (result.next()) {
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                int birthYear = result.getInt("birth_year");
+                Author author = new Author(name, birthYear);
+                author.setId(id);
+                authors.add(author);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to retrieve authors.");
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.out.println("Failed to retrieve authors.");
-        e.printStackTrace();
+        return authors;
     }
-    return authors;
-}
 
 
     @Override
@@ -156,13 +165,13 @@ public List<Author> getAllAuthors() {
                 int authorId = result.getInt("id");
                 String authorName = result.getString("name");
                 int bookCount = result.getInt("book_count");
-                Author author = new Author( authorName, 0);
+                Author author = new Author(authorName, 0);
                 author.setId(authorId);
                 author.setBookCount(bookCount);
                 authors.add(author);
             }
         } catch (SQLException e) {
-            System.out.println("Failed to retrieve most prolific authors.");
+            System.out.println("Failed to get most prolific authors.");
             e.printStackTrace();
         }
         return authors;
@@ -184,6 +193,7 @@ public List<Author> getAllAuthors() {
                 int birthYear = result.getInt("birth_year");
 
                 Author author = new Author(name, birthYear);
+                author.setId(authorId);
                 authors.add(author);
             }
 
@@ -194,6 +204,27 @@ public List<Author> getAllAuthors() {
         }
 
         return authors;
+    }
+
+    public boolean authorExistsInDatabase(Author author) {
+        boolean exists = false;
+        try {
+            String query = "SELECT COUNT(*) FROM authors WHERE name = ? AND birth_year = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, author.getName());
+            statement.setInt(2, author.getBirthYear());
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                int count = result.getInt(1);
+                exists = count > 0;
+            }
+            result.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
     }
 }
 

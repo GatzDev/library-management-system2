@@ -4,14 +4,14 @@ import library_management.dao.AuthorDao;
 import library_management.dao.BookDao;
 import library_management.entity.Author;
 import library_management.impl.AuthorDaoImpl;
-import library_management.util.Constants;
+import library_management.impl.BookDaoImpl;
+import library_management.util.DatabaseManager;
 import library_management.util.Input;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class AuthorMenu {
@@ -19,21 +19,17 @@ public class AuthorMenu {
     private AuthorDao authorDao;
     private BookDao bookDao;
 
-    public AuthorMenu(BookDao bookDao) {
-      //  this.bookDao = bookDao;
+    public AuthorMenu() {
 
         reader = new BufferedReader(new InputStreamReader(System.in));
 
+        DatabaseManager.connect();
 
-        // Create a database connection
-        try {
-            Connection connection = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
-            authorDao = new AuthorDaoImpl(connection);
-        } catch (
-                SQLException ex) {
-            System.out.println("An error occurred. Maybe user/password is invalid");
-            ex.printStackTrace();
-        }
+        Connection connection = DatabaseManager.getConnection();
+
+        authorDao = new AuthorDaoImpl(connection);
+        bookDao = new BookDaoImpl(connection);
+
     }
 
     public void aMenu() {
@@ -42,7 +38,7 @@ public class AuthorMenu {
         System.out.println("2. Update Author");
         System.out.println("3. Delete Author");
         System.out.println("4. Search Author");
-        System.out.println("5. Return to Previous Menu");
+        System.out.println("5. Return to Previous Menu\n");
         System.out.print("Enter your choice: ");
 
         int choice = Input.readIntInput(reader);
@@ -61,7 +57,7 @@ public class AuthorMenu {
                 searchAuthor();
                 break;
             case 5:
-                return; // Return to the previously displayed menu
+                return;
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
@@ -71,8 +67,17 @@ public class AuthorMenu {
         System.out.println("Enter the name of the author:");
         String name = Input.readStringInput(reader);
 
+        if (name.isEmpty()) {
+            System.out.println("Author name cannot be empty.");
+            name = Input.readStringInput(reader);        }
+
         System.out.println("Enter the birth year of the author:");
         int birthYear = Input.readIntInput(reader);
+
+        if (birthYear <= 1000 || birthYear > LocalDate.now().getYear()) {
+            System.out.println("Please enter a valid year.");
+            birthYear = Input.readIntInput(reader);
+        }
 
         Author author = new Author(name, birthYear);
 
@@ -81,24 +86,12 @@ public class AuthorMenu {
     }
 
     private void updateAuthor() {
-        List<Author> authors = authorDao.getAllAuthorsWithId();
-
-        System.out.println("List of Authors:");
-        for (Author author : authors) {
-            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
-        }
+        List<Author> authors = displayAuthors();
 
         System.out.println("Enter the ID of the author to update:");
         int authorId = Input.readIntInput(reader);
 
-
-        Author existingAuthor = null;
-        for (Author author : authors) {
-            if (author.getId() == authorId) {
-                existingAuthor = author;
-                break;
-            }
-        }
+        Author existingAuthor = getAuthorById(authors, authorId);
 
         if (existingAuthor == null) {
             System.out.println("Author not found.");
@@ -113,13 +106,18 @@ public class AuthorMenu {
         }
 
         System.out.println("Enter the new birth year of the author (or leave blank to keep the existing birth year):");
-        int updatedBirthYear = Input.readIntInput(reader);
+        String updatedBirthYearStr = Input.readStringInput(reader);
 
-        if (updatedBirthYear != 0) {
-            existingAuthor.setBirthYear(updatedBirthYear);
+        if (!updatedBirthYearStr.isBlank()) {
+            int updatedBirthYear = Integer.parseInt(updatedBirthYearStr);
+            if (updatedBirthYear > 0) {
+                existingAuthor.setBirthYear(updatedBirthYear);
+            } else {
+                System.out.println("Invalid birth year. Please enter a valid year.");
+                return;
+            }
         }
 
-        // Update the author in the database
         boolean updated = authorDao.updateAuthor(existingAuthor);
         if (updated) {
             System.out.println("Author updated successfully.");
@@ -128,29 +126,18 @@ public class AuthorMenu {
         }
     }
 
+
     private void removeAuthor() {
-        List<Author> authors = authorDao.getAllAuthorsWithId();
+        List<Author> authors = displayAuthors();
 
-        System.out.println("List of Authors:");
-        for (Author author : authors) {
-            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
-        }
-
-        System.out.println("Enter the ID of the author to Remove:");
+        System.out.println("Enter the ID of the author to remove:");
         int authorId = Input.readIntInput(reader);
 
-
-        Author existingAuthor = null;
-        for (Author author : authors) {
-            if (author.getId() == authorId) {
-                existingAuthor = author;
-                break;
-            }
-        }
+        Author existingAuthor = getAuthorById(authors, authorId);
 
         if (existingAuthor == null) {
             System.out.println("Author not found.");
-            return;
+            Input.readIntInput(reader);
         }
 
         boolean removed = authorDao.removeAuthor(authorId);
@@ -165,6 +152,10 @@ public class AuthorMenu {
         System.out.println("Enter a keyword to search for authors:");
         String keyword = Input.readStringInput(reader);
 
+        if (keyword.isEmpty()) {
+            System.out.println("Keyword cannot be empty. Please enter a valid keyword.");
+            keyword = Input.readStringInput(reader);        }
+
         List<Author> authors = authorDao.searchAuthor(keyword);
 
         if (authors.isEmpty()) {
@@ -172,10 +163,32 @@ public class AuthorMenu {
         } else {
             System.out.println("Authors matching the keyword:");
             for (Author author : authors) {
-               // int books = bookDao.getBooksByAuthorId(author.getId());
-                System.out.println(author.getName() + " (" + author.getBookCount() + " books)");
+                int bookCount = bookDao.getBooksByAuthorId(author.getId());
+                author.setBookCount(bookCount);
+                System.out.println("ID : " +author.getId() + " , Name: " + author.getName() + " ," + author.getBookCount() + " books");
             }
         }
     }
+
+    private List<Author> displayAuthors() {
+        List<Author> authors = authorDao.getAllAuthorsWithId();
+
+        System.out.println("--- List of Authors ---");
+        for (Author author : authors) {
+            System.out.println("ID: " + author.getId() + ", Name: " + author.getName());
+        }
+        return authors;
+    }
+
+    private Author getAuthorById(List<Author> authors, int authorId) {
+        for (Author author : authors) {
+            if (author.getId() == authorId) {
+                return author;
+            }
+        }
+        return null;
+    }
 }
+
+
 

@@ -1,21 +1,19 @@
 package library_management.entity;
-
-import java.util.List;
 import java.util.Objects;
 
 public class User extends BaseEntity{
 
     private String name;
     private String email;
-    private List<Book> borrowedBooks;
+    //private List<Book> borrowedBooks;
     private int transactionCount = 0;
 
 
-    public User( String name, String email, List<Book> borrowedBooks) {
-        this.name = name;
-        this.email = email;
-        this.borrowedBooks = borrowedBooks;
-    }
+//    public User( String name, String email, List<Book> borrowedBooks) {
+//        this.name = name;
+//        this.email = email;
+//        this.borrowedBooks = borrowedBooks;
+//    }
 
     public User( String name, String email) {
         this.name = name;
@@ -57,9 +55,9 @@ public class User extends BaseEntity{
         return Objects.equals(name, otherUser.getName()) &&
                 Objects.equals(email, otherUser.getEmail());
     }
-
-
-
-
+    @Override
+    public String toString() {
+        return "User ID: " + getId() + ", Name: " + name + ", Email: " + email;
+    }
 }
 

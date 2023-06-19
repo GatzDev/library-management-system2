@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserDaoImpl implements UserDao {
-    private Connection connection;
+    private final Connection connection;
     public UserDaoImpl(Connection connection) {
         this.connection = connection;
     }
@@ -32,7 +32,7 @@ public class UserDaoImpl implements UserDao {
             PreparedStatement sta = connection.prepareStatement(query);
             sta.setString(1, user.getName());
             sta.setString(2, user.getEmail());
-            sta.setInt(3, user.getId());  // Set the third parameter for user ID
+            sta.setInt(3, user.getId());
             sta.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -88,7 +88,6 @@ public class UserDaoImpl implements UserDao {
             ResultSet result = sta.executeQuery();
 
             while (result.next()) {
-                int id = result.getInt("id");
                 String name = result.getString("name");
                 String email = result.getString("email");
 
@@ -157,6 +156,27 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return activeUsers;
+    }
+
+     public boolean userAddedToDatabase(User user) {
+        try {
+            // Execute a query to check if the user exists in the database
+            String query = "SELECT COUNT(*) FROM users WHERE name = ? AND email = ?";
+            PreparedStatement sta = connection.prepareStatement(query);
+            sta.setString(1, user.getName());
+            sta.setString(2, user.getEmail());
+            ResultSet resultSet = sta.executeQuery();
+
+            // Check the result of the query
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0; // Return true if the user exists in the database
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Return false if an exception occurred or the query failed
     }
 }
 

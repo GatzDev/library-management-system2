@@ -12,5 +12,5 @@ public interface UserDao {
     List<User> getAllUsers();
     List<User> searchUsers(String keyword);
     public List<User> getMostActiveUsers(int limit);
-
-}
+    boolean userAddedToDatabase(User user);
+    }

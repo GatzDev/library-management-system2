@@ -30,7 +30,6 @@ public class Main {
             Connection conn = DriverManager.getConnection(Constants.URL, Constants.USERNAME, Constants.PASSWORD);
             System.out.println("Connected to database successfully ...");
             CreateTableInDataBase.createTables(conn);
-            System.out.println("Tables created successfully!");
         } catch (SQLException e) {
             System.err.println("Error connecting to the database: " + e.getMessage());
         }
@@ -50,7 +49,6 @@ public class Main {
             System.out.println("Enter the file path to write to:");
             String writeFilePath = Input.readStringInput(reader);
             List<String> lines = new ArrayList<>();
-            // Add lines from user input or other sources
             try {
                 FileHandler.writeToFile(lines, writeFilePath);
                 System.out.println("File written successfully.");

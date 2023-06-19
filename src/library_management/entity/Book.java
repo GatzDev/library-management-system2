@@ -1,7 +1,5 @@
 package library_management.entity;
 
-import library_management.util.Constants;
-
 public class Book extends BaseEntity{
 
     private String title;
@@ -49,6 +47,7 @@ public class Book extends BaseEntity{
 
     }
 
+
     public int getTransactionCount() {
         return this.transactionCount;
     }
@@ -65,7 +64,6 @@ public class Book extends BaseEntity{
         this.title = title;
     }
 
-
     public Author getAuthor() {
         return author;
     }
@@ -73,7 +71,6 @@ public class Book extends BaseEntity{
     public void setAuthor(Author author) {
         this.author = author;
     }
-
 
     public int getPublicationYear() {
         return publicationYear;
@@ -88,11 +85,7 @@ public class Book extends BaseEntity{
     }
 
     public void setISBN(String ISBN) {
-        if (Constants.ISBN_PATTERN.matcher(ISBN).matches()){
-        this.ISBN = ISBN;
-        } else {
-            throw new IllegalArgumentException("Invalid ISBN format.");
-        }
+           this.ISBN = ISBN;
     }
 
     public int getStock() {
@@ -100,18 +93,17 @@ public class Book extends BaseEntity{
     }
 
     public void setStock(int stock) {
-        this.stock = stock;
+            this.stock = stock;
     }
-
 
     @Override
     public String toString() {
         return "Book ID: " + this.getId() +
                 ", Title: " + title +
-                ", Author ID: " + author.getId() +
+                ", Author ID: " +  author.getId()  +
                 ", Publication Year: " + publicationYear +
-                ", ISBN: " + ISBN +
-                ", Stock: " + stock;
+                ", ISBN: " + (ISBN != null ? ISBN : "N/A") +
+                ", Stock: " + this.getStock();
     }
 
     @Override

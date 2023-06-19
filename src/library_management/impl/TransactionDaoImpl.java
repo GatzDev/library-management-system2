@@ -1,20 +1,19 @@
 package library_management.impl;
+
 import library_management.dao.TransactionDao;
 import library_management.entity.Book;
 import library_management.entity.Transaction;
 import library_management.entity.User;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionDaoImpl implements TransactionDao {
-    private Connection connection;
-    private UserDaoImpl userDaoImpl;
-    private BookDaoImpl bookDaoImpl;
-    private Transaction[] transactions
-            ;
-    private BookDaoImpl bookDao;
+    private final Connection connection;
+    private final UserDaoImpl userDaoImpl;
+    private final BookDaoImpl bookDaoImpl;
 
     public TransactionDaoImpl(Connection connection) {
         this.connection = connection;
@@ -23,9 +22,9 @@ public class TransactionDaoImpl implements TransactionDao {
     }
 
 
-public Transaction addTransaction(Transaction transaction) {
+    public Transaction addTransaction(Transaction transaction) {
         try {
-            User user = transaction.getUser(); // Get the User object from the Transaction
+            User user = transaction.getUser();
             if (user == null) {
                 System.out.println("User object is null. Please set a valid User object.");
                 return null;
@@ -33,7 +32,7 @@ public Transaction addTransaction(Transaction transaction) {
 
             String query = "INSERT INTO transactions (user_id, book_id, borrowing_date, return_date) VALUES (?, ?, ?, ?)";
             PreparedStatement sta = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            sta.setInt(1, user.getId()); // Use the User object to retrieve the ID
+            sta.setInt(1, user.getId());
             sta.setInt(2, transaction.getBook().getId());
             sta.setDate(3, Date.valueOf(transaction.getBorrowingDate()));
             sta.setDate(4, null);
@@ -54,7 +53,6 @@ public Transaction addTransaction(Transaction transaction) {
         }
         return null;
     }
-
 
 
     @Override
@@ -83,6 +81,22 @@ public Transaction addTransaction(Transaction transaction) {
         return null;
     }
 
+    @Override
+    public boolean updateTransactionCount(Book book) {
+        try {
+            String query = "UPDATE books SET transaction_count = ? WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, book.getTransactionCount());
+            statement.setInt(2, book.getId());
+            int rowsUpdated = statement.executeUpdate();
+            statement.close();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     @Override
     public Transaction getTransactionById(int transactionId) {
@@ -93,14 +107,14 @@ public Transaction addTransaction(Transaction transaction) {
 
             ResultSet result = sta.executeQuery();
             if (result.next()) {
-                int id = result.getInt("id");
-                int userId = result.getInt("user_id");
-                int bookId = result.getInt("book_id");
+//                int id = result.getInt("id");
+//                int userId = result.getInt("user_id");
+//                int bookId = result.getInt("book_id");
                 LocalDate borrowingDate = result.getDate("borrowing_date").toLocalDate();
                 LocalDate returnDate = result.getDate("return_date") != null
                         ? result.getDate("return_date").toLocalDate() : null;
 
-                return new Transaction( borrowingDate, returnDate);
+                return new Transaction(borrowingDate, returnDate);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,15 +158,8 @@ public Transaction addTransaction(Transaction transaction) {
                 }
             }
         }
-
         return borrowedBooks;
     }
-
-
-
-
-
-
 
 
     @Override
@@ -180,7 +187,6 @@ public Transaction addTransaction(Transaction transaction) {
         }
         return transactions;
     }
-
 
 
     @Override
