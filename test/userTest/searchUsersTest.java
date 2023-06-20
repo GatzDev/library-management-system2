@@ -48,8 +48,8 @@ public class searchUsersTest {
 
     @Test
     public void returnsMatchingUsers() {
-        //User user = new User("Turbo22", "turrro@gmail.com");
-        //userDao.addUser(user);
+        User user = new User("Turbo22", "turrro@gmail.com");
+        userDao.addUser(user);
 
         String keyword = "tur"; // Set  search
         int expectedUserCount = 5; // Set number of matching users

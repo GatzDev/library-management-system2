@@ -49,7 +49,6 @@ public class updateUserTest {
         User user = new User("Bob", "bobcho@abv.com");
         user.setId(1);
 
-        // Perform the update operation
         boolean result = userDao.updateUser(user);
 
         // Assert that the update was successful
@@ -60,7 +59,6 @@ public class updateUserTest {
     public void nullUser() {
         boolean result = userDao.updateUser(null);
 
-        // Assert that the update failed
         assertFalse(result);
     }
 
